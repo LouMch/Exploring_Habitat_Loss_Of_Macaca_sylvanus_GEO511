@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "data/Readme.html",
     "href": "data/Readme.html",
     "title": "Data Folder",
@@ -18,13 +11,41 @@
     "href": "index.html",
     "title": "My Final Project Template",
     "section": "",
-    "text": "[~ 200 words]\nClearly stated background and questions / hypotheses / problems being addressed. Sets up the analysis in an interesting and compelling way. Include figures if you like."
+    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.Materials and methods\n\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat. Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.\n\n\n\n\n\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.\n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n\n\n\n\n\n\n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n\n\n\n\n\n\n\n\n\n\n\nPlot occurrence points of Barbary Macaquex\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nReading layer `exported' from data source \n  `/Users/louizamohamed-cherif/Macaca_syl_prj/Macaca_syl_dir/data/MacacaSylHab_range/T12561A50043570.gpkg' \n  using driver `GPKG'\nSimple feature collection with 1 feature and 16 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -6.996839 ymin: 31.26367 xmax: 5.716248 ymax: 36.88429\nGeodetic CRS:  WGS 84\n\n\n\n\n\n\n\n\n\n\n\n\nTables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.\nShow tables, plots, etc. and describe them."
   },
   {
-    "objectID": "index.html#download-and-clean-all-required-data",
-    "href": "index.html#download-and-clean-all-required-data",
+    "objectID": "index.html#esa-worldcover-for-tree-cover-data",
+    "href": "index.html#esa-worldcover-for-tree-cover-data",
     "title": "My Final Project Template",
-    "section": "Download and clean all required data",
-    "text": "Download and clean all required data\n\nn=20\ndata=data.frame(x=runif(n,-180,180),\n                y=runif(n,-60,60),\n                size = runif(n, 5, 20),\n                category = factor(\n                  sample(letters[1:5], n, replace = TRUE)\n                  ),\n                value = rnorm(n))\n\ndata %&gt;% \n  slice(1:10) %&gt;% #show only 1:n rows\n  kable(digits=2,align=\"c\")%&gt;% #make table and round to two digits\n  kable_styling(bootstrap_options = \n                  c(\"striped\", \"hover\", \"condensed\", \"responsive\")) #apply other formatting\n\n\n\n\nx\ny\nsize\ncategory\nvalue\n\n\n\n\n83.07\n-34.96\n16.26\nd\n0.54\n\n\n-98.57\n-26.00\n19.85\nc\n-0.44\n\n\n15.89\n-49.82\n19.21\nc\n0.71\n\n\n159.74\n-49.89\n8.63\nd\n-0.56\n\n\n154.53\n8.01\n9.46\nd\n-0.84\n\n\n152.43\n-49.10\n14.60\na\n0.55\n\n\n16.34\n-50.88\n18.97\na\n-0.29\n\n\n-139.80\n21.96\n14.87\nb\n0.56\n\n\n108.56\n-26.49\n10.58\na\n0.63\n\n\n138.35\n-7.91\n6.30\nb\n0.12\n\n\n\n\nAdd any additional processing steps here."
+    "section": "",
+    "text": "Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.\n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n\n\n\n\n\n\n\n\n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n=========================================\n                                          \n\n|---------|---------|---------|---------|\n========================================="
+  },
+  {
+    "objectID": "index.html#species-occurrence-points",
+    "href": "index.html#species-occurrence-points",
+    "title": "My Final Project Template",
+    "section": "",
+    "text": "Plot occurrence points of Barbary Macaquex"
+  },
+  {
+    "objectID": "index.html#species-range-map",
+    "href": "index.html#species-range-map",
+    "title": "My Final Project Template",
+    "section": "",
+    "text": "Reading layer `exported' from data source \n  `/Users/louizamohamed-cherif/Macaca_syl_prj/Macaca_syl_dir/data/MacacaSylHab_range/T12561A50043570.gpkg' \n  using driver `GPKG'\nSimple feature collection with 1 feature and 16 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -6.996839 ymin: 31.26367 xmax: 5.716248 ymax: 36.88429\nGeodetic CRS:  WGS 84"
+  },
+  {
+    "objectID": "index.html#words",
+    "href": "index.html#words",
+    "title": "My Final Project Template",
+    "section": "",
+    "text": "Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.\nShow tables, plots, etc. and describe them."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   }
 ]
