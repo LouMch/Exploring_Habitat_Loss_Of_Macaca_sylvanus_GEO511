@@ -60,7 +60,7 @@ Land cover data downloaded from ESA World Cover from the year 2021, masked to Tr
 ```{r}
 #| echo: false
 #| label: download_landcover
-#| cache: true 
+#| cache: false 
 #| warning: false 
 #| message: false
 
@@ -80,7 +80,7 @@ Plot occurrence points of Barbary Macaque
 ```{r}
 #| echo: false
 #| label: download_occ_pt
-#| cache: true 
+#| cache: false
 #| warning: false 
 #| message: false 
 #2. Download species point data at desired extent 
@@ -102,7 +102,7 @@ plot(st_geometry(occ_sf), col = "orange", pch = 16, cex = 0.5, add = TRUE)
 ```{r}
 #| echo: false
 #| label: download_sp_range
-#| cache: true
+#| cache: false
 #| warning: false 
 #| message: false 
 #3. Download IUCN redlist species bounds at desired extent 
