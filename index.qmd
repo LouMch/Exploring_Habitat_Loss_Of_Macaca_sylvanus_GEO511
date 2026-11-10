@@ -75,7 +75,7 @@ plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 
 ## 2. Species Occurrence Points
 
-Plot occurrence points of Barbary Macaque
+Plot occurrence points of Barbary Macaquex
 
 ```{r}
 #| echo: false
