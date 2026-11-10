@@ -73,7 +73,48 @@ levels(tree_cover) <- data.frame(id = 10, cover = "Tree Cover") # 1.4 renames le
 plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 ```
 
-\[\~200 words\]
+## 2. Species Occurrence Points
+
+Plot occurrence points of Barbary Macaque
+
+```{r}
+#| echo: false
+#| label: download_occ_pt
+#| cache: true 
+#| warning: false 
+#| message: false 
+#2. Download species point data at desired extent 
+bounding_box <- st_as_text(boundbox_poly) # 2.1 translates polygon to text  
+occ_data <- occ_search(scientificName = "Macaca sylvanus", hasCoordinate = TRUE, geometry = bounding_box ) # 2.2 pulls occurance data with coord info within bounding box 
+occ_df <- occ_data$data # 2.3 extracts cleaned observation records 
+occ_sf <- st_as_sf(occ_df, 
+                   coords = c("decimalLongitude", "decimalLatitude"), 
+                   crs = 4326, 
+                   remove = FALSE) # 2.4 converts occurence data to sf object 
+
+# == 2.5 run a test plot to see if points fall in desired study area == # 
+plot(tree_cover, main = "Tree Cover & Macaca sylvanus Occurrences", col = "forestgreen")
+plot(st_geometry(occ_sf), col = "orange", pch = 16, cex = 0.5, add = TRUE)
+```
+
+## 3. Species Range Map
+
+```{r}
+#| echo: false
+#| label: download_sp_range
+#| cache: true
+#| warning: false 
+#| message: false 
+#3. Download IUCN redlist species bounds at desired extent 
+IUCN_range <- st_read("data/MacacaSylHab_range/T12561A50043570.gpkg") # 3.1 read in range data 
+macaque_range <- st_transform(IUCN_range, crs = 4326) |> st_crop(boundbox_poly) # 3.2 crop to study area 
+
+# == 3.3 run a test plot to ensure study area covers range == # 
+plot(tree_cover, main = "Tree Cover & IUCN Macaque Range", col = "forestgreen")
+plot(st_geometry(macaque_range), border = "red", lwd = 1.0, add = TRUE) #note to self : make some adjustments to bounding_box 
+```
+
+## \[\~200 words\]
 
 Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.
 
