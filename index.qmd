@@ -1,23 +1,26 @@
 ---
-title: "My Final Project Template"
+title: "Wildfire Exposure Assesment For Algerian Barbary Macaques (*Macaca sylvanus*)"
+format: html 
+theme: solar 
 author: Louiza Mohamed-Cherif 
-subtitle: Subtitle here if desired
+subtitle: "A spatial assesment of Barbary Macaque habitat overlap with 2026 wildfires in Northeastern Algeria"
 date: today
 date-format: long
 ---
 
 # Introduction
 
-The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the [IUCN Red list](https://www.iucnredlist.org/search?query=Macaca%20sylvanus&searchType=species) as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.
+The Barbary Macaque (*Macaca sylvanus*)  is North Africa’s only primate and has been classified as endangered by the [IUCN Red list](https://www.iucnredlist.org/search?query=Macaca%20sylvanus&searchType=species) as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-align: center
 #| fig-cap: "Barbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif"
+#| fig-align: center
 
-knitr::include_graphics("data/monkey.jpeg")
+
+knitr::include_graphics("data/monkey.png")
 
 ```
 
@@ -27,19 +30,37 @@ Algeria holds nearly 25% of the Barbary Macaque’s population, however there is
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-align: center
 #| fig-cap: "A wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News "
+#| fig-align: center
+
 
 knitr::include_graphics("data/fire_image.jpeg")
 
 ```
 
-Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.
+In the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.
 
-# Methods 
+# Methods
 
-```{r, message=F, warning=F}
+1.  AOI was defined as a bounding of approximately \_\_\_ km surrounding the forested coastline of Northeast Algeria. This region encompasses \_\_ and \_\_\_ . It contains\_\_\_ protected area \_\_ % see fig.()
+
+2.  relevant data sets are cleaned and cropped to study area
+
+3.  Identify suitable habitat range
+
+4.  The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection, the total square km of habitat exposed to fire was then calculated using st_area.
+
+5.  Intersect and area was calculated for protected areas.
+
+6.  Known species observations were used to confirm areas of worst M. sylvanus exposure ..
+
+## Data:
+
+```{r}
 #| echo: false
+#| warning: false 
+#| message: false
+#| results: false
 library(tidyverse)
 library(leaflet)
 library(kableExtra)
@@ -54,8 +75,6 @@ library(greenSD)
 library(dplyr)
 library(dygraphs)
 ```
-
-## Data: 
 
 ```{r}
 #| echo: false
@@ -78,7 +97,7 @@ boundbox_poly <- st_as_sfc(st_bbox(boundbox_coords, crs = 4326))
 #plot(boundbox_poly) # 2.3 draws a rectangle with no data
 ```
 
-## 1. ESA WorldCover For Tree Cover Data
+## 1. ESA World Cover For Tree Cover Data
 
 Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.
 
@@ -101,7 +120,7 @@ plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 
 ## 2. Species Occurrence Points
 
-Plot occurrence points of Barbary Macaquex
+Plot occurrence points of Barbary Macaque \*add details
 
 ```{r}
 #| echo: false
@@ -112,7 +131,7 @@ Plot occurrence points of Barbary Macaquex
 #| results: false
 #2. Download species point data at desired extent 
 bounding_box <- st_as_text(boundbox_poly) # 2.1 translates polygon to text  
-occ_data <- occ_search(scientificName = "Macaca sylvanus", hasCoordinate = TRUE, geometry = bounding_box ) # 2.2 pulls occurance data with coord info within bounding box 
+occ_data <- occ_search(scientificName = "Macaca sylvanus", hasCoordinate = TRUE, geometry = bounding_box ) # 2.2 pulls occurence data with coord info within bounding box 
 occ_df <- occ_data$data # 2.3 extracts cleaned observation records 
 occ_sf <- st_as_sf(occ_df, 
                    coords = c("decimalLongitude", "decimalLatitude"), 
@@ -142,7 +161,7 @@ plot(tree_cover, main = "Tree Cover & IUCN Macaque Range", col = "forestgreen")
 plot(st_geometry(macaque_range), border = "red", lwd = 1.0, add = TRUE) #note to self : make some adjustments to bounding_box 
 ```
 
-## 4. Burned Area Data 
+## 4. Burned Area Data
 
 VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026
 
@@ -177,7 +196,8 @@ burned_sf <- st_as_sf(burned_poly) |>
 ##== 4.7 run a test plot == ## 
 
 plot(tree_cover, col= "forestgreen", main = "Burned Areas in Northeast Algeria: Summer of 2026 ")
-plot(st_geometry(burned_sf), col = "red", pch = 4, cex = 0.6, add = TRUE)
+plot(st_geometry(burned_sf), pch = 4, col = "red", cex = 0.6, add = TRUE)
+
 
 
   
@@ -205,10 +225,13 @@ plot(st_geometry(protected_areas), col = "gold", add = TRUE )
 
 # Data Processing & Analysis
 
+## 1. Creating a suitable habitat raster
+
 ```{r}
 #| echo: false
 #| warning: false 
 #| error: false
+#| results: false
 #1. Create assumed suitable macaque habitat 
 macaque_habitat_raster <- mask(tree_cover, vect(macaque_range)) 
 plot(macaque_habitat_raster, main = "Macaque Habitat ", col = "forestgreen")

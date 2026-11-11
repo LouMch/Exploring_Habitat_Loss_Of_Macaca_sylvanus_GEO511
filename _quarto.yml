@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "GEO511_FinalProject"
+  title: "Wildfire Exposure Assesment For Algerian Barbary Macaques (*Macaca sylvanus*)"
   navbar:
     left:
       - href: index.qmd
