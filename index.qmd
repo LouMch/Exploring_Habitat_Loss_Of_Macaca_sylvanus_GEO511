@@ -14,12 +14,27 @@ The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-align: center
+#| fig-cap: "Barbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif"
 
-#![Caption for your image](path/to/image.png){fig-align="center"}
+knitr::include_graphics("data/image")
 
 ```
 
-Algeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat. Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.
+Algeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-align: center
+#| fig-cap: "A wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News "
+
+knitr::include_graphics("data/fire_image.jpeg")
+
+```
+
+Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.
 
 # Methods 
 
