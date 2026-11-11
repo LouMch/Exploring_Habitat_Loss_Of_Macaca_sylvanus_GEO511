@@ -94,6 +94,7 @@ Plot occurrence points of Barbary Macaquex
 #| cache: false
 #| warning: false 
 #| message: false 
+#| results: false
 #2. Download species point data at desired extent 
 bounding_box <- st_as_text(boundbox_poly) # 2.1 translates polygon to text  
 occ_data <- occ_search(scientificName = "Macaca sylvanus", hasCoordinate = TRUE, geometry = bounding_box ) # 2.2 pulls occurance data with coord info within bounding box 
@@ -116,6 +117,7 @@ plot(st_geometry(occ_sf), col = "orange", pch = 16, cex = 0.5, add = TRUE)
 #| cache: false
 #| warning: false 
 #| message: false 
+#| results: false
 #3. Download IUCN redlist species bounds at desired extent 
 IUCN_range <- st_read("data/MacacaSylHab_range/T12561A50043570.gpkg") # 3.1 read in range data 
 macaque_range <- st_transform(IUCN_range, crs = 4326) |> st_crop(boundbox_poly) # 3.2 crop to study area 
@@ -133,6 +135,7 @@ VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 
 #| echo: false 
 #| warning: false 
 #| message: false 
+#| results: false
 #4. Download burned area dataset at desired extent 
 #The "Burned area" folder contains five files, they will need to be combined into a single sf for ploting. 
 burn_files <- list.files("data/Burned_area", pattern = "\\.hdf$", full.names = TRUE) 
@@ -172,7 +175,8 @@ plot(st_geometry(burned_sf), col = "red", pch = 4, cex = 0.6, add = TRUE)
 #| label: download_protected_areas
 #| cache: true
 #| warning: false
-#| message: false 
+#| message: false
+#| results: false 
 #5. Download protected area dataset at desired extent 
 gdb_file <- "data/WDPA_gdp/WDPA_WDOECM_Nov2026_Public_DZA.gdb"
 # 5.1 Note to self:used st_layers(gdb_file) to read what the folder contains 
