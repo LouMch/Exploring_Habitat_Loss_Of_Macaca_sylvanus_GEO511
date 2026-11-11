@@ -11,28 +11,49 @@
     "href": "index.html",
     "title": "My Final Project Template",
     "section": "",
-    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.Materials and methods\n\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat. Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.\n\n\n\n\n\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlot occurrence points of Barbary Macaquex\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.\nShow tables, plots, etc. and describe them."
+    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat. Relevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss."
+  },
+  {
+    "objectID": "index.html#data",
+    "href": "index.html#data",
+    "title": "My Final Project Template",
+    "section": "Data:",
+    "text": "Data:"
   },
   {
     "objectID": "index.html#esa-worldcover-for-tree-cover-data",
     "href": "index.html#esa-worldcover-for-tree-cover-data",
     "title": "My Final Project Template",
-    "section": "",
-    "text": "Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover."
+    "section": "1. ESA WorldCover For Tree Cover Data",
+    "text": "1. ESA WorldCover For Tree Cover Data\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover."
   },
   {
     "objectID": "index.html#species-occurrence-points",
     "href": "index.html#species-occurrence-points",
     "title": "My Final Project Template",
-    "section": "",
-    "text": "Plot occurrence points of Barbary Macaquex"
+    "section": "2. Species Occurrence Points",
+    "text": "2. Species Occurrence Points\nPlot occurrence points of Barbary Macaquex"
   },
   {
-    "objectID": "index.html#words",
-    "href": "index.html#words",
+    "objectID": "index.html#species-range-map",
+    "href": "index.html#species-range-map",
     "title": "My Final Project Template",
-    "section": "",
-    "text": "Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.\nShow tables, plots, etc. and describe them."
+    "section": "3. Species Range Map",
+    "text": "3. Species Range Map"
+  },
+  {
+    "objectID": "index.html#burned-area-data",
+    "href": "index.html#burned-area-data",
+    "title": "My Final Project Template",
+    "section": "4. Burned Area Data",
+    "text": "4. Burned Area Data\nVIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026"
+  },
+  {
+    "objectID": "index.html#protected-areas",
+    "href": "index.html#protected-areas",
+    "title": "My Final Project Template",
+    "section": "5. Protected Areas",
+    "text": "5. Protected Areas"
   },
   {
     "objectID": "about.html",
