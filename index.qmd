@@ -17,7 +17,7 @@ The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has
 #| fig-align: center
 #| fig-cap: "Barbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif"
 
-knitr::include_graphics("data/image")
+knitr::include_graphics("data/monkey.jpeg")
 
 ```
 
