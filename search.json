@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "",
-    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.\n\n\n\n\n\nBarbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif\n\n\n\n\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.\n\n\n\n\n\nA wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News\n\n\n\n\nRelevantly, in the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss."
+    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.\n\n\n\n\n\nBarbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif\n\n\n\n\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.\n\n\n\n\n\nA wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News\n\n\n\n\nIn the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss."
   },
   {
     "objectID": "index.html#data",
@@ -21,18 +21,18 @@
     "text": "Data:"
   },
   {
-    "objectID": "index.html#esa-worldcover-for-tree-cover-data",
-    "href": "index.html#esa-worldcover-for-tree-cover-data",
+    "objectID": "index.html#esa-world-cover-for-tree-cover-data",
+    "href": "index.html#esa-world-cover-for-tree-cover-data",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
-    "section": "1. ESA WorldCover For Tree Cover Data",
-    "text": "1. ESA WorldCover For Tree Cover Data\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover."
+    "section": "1. ESA World Cover For Tree Cover Data",
+    "text": "1. ESA World Cover For Tree Cover Data\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover."
   },
   {
     "objectID": "index.html#species-occurrence-points",
     "href": "index.html#species-occurrence-points",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "2. Species Occurrence Points",
-    "text": "2. Species Occurrence Points\nPlot occurrence points of Barbary Macaquex"
+    "text": "2. Species Occurrence Points\nPlot occurrence points of Barbary Macaque *add details"
   },
   {
     "objectID": "index.html#species-range-map",
