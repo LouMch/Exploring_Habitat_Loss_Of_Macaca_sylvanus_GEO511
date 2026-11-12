@@ -63,6 +63,27 @@
     "text": "1. Creating a suitable habitat raster"
   },
   {
+    "objectID": "index.html#calculating-total-habitat-burned",
+    "href": "index.html#calculating-total-habitat-burned",
+    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "section": "2. Calculating total habitat burned",
+    "text": "2. Calculating total habitat burned\n\nburned_sf &lt;- st_make_valid(burned_sf)\nhabitat_sf &lt;- st_make_valid(habitat_sf)\n#1. Calculate the overlap of burned area and macaque habitat \nburned_hab_union &lt;- st_union(burned_sf) # 1.1 combine burned area into one combined total \nburned_hab_union &lt;- st_make_valid(burned_hab_union)\n# 1.2 intersect burned area with habitat \nburned_hab &lt;- st_intersection(burned_hab_union, habitat_sf)\n# 1.2.1 - check by running plot(burned_hab)\n# 1.3 calculate total area burned \nburned_area &lt;- burned_hab |&gt; \n  st_as_sf() |&gt;  # 1.3.1 convert burned_hab back into an sf before passing to st_area \n  mutate(burned_area = st_area(x)) # 1.3.2 x notates the single column in burned_hab \n\n# burned_area is approx. 40.5km2 \n# 1.4 find percent habitat burned \n\npercent_burned &lt;- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 \n\n# percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good!"
+  },
+  {
+    "objectID": "index.html#calculating-protected-areas-burned",
+    "href": "index.html#calculating-protected-areas-burned",
+    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "section": "3. Calculating protected areas burned",
+    "text": "3. Calculating protected areas burned\n\nplan to –&gt; find intersect of protected areas and habitat (how much of macaque habitat actually falls in protected areas)\nfind total area of protected habitat burned (follow work flow from step 2)\nfind how much of protected area intersect with actual macaque habitat was burned"
+  },
+  {
+    "objectID": "index.html#validation-with-species-occurrence-points",
+    "href": "index.html#validation-with-species-occurrence-points",
+    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "section": "4. validation with species occurrence points",
+    "text": "4. validation with species occurrence points\nNotes: did not specify year when pulling occurrence data from GBIF, I’m going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet."
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
