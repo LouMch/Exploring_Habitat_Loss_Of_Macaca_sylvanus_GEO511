@@ -9,77 +9,77 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "",
     "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven primarily by tourism.\n\n\n\n\n\nBarbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif\n\n\n\n\nAlgeria holds nearly 25% of the Barbary Macaque’s global population, however there is a crucial need for new reviews as a comprehensive census of the existing populations within the country does not exist (Boumenir et al ., 2025) Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap significantly with what remains of Algerian macaque habitat.\n\n\n\n\n\nA wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News\n\n\n\n\nIn the summer of 2026 nearly 160 wildfires broke out within a 24 hour period, stretching along the coastline of Algeria. These fires were felt across the north-eastern, central, and western portions of the country, with the highest intensity occurring in the north-east. The rapid scale and severity of these fires within such a short time frame signifies an urgent need to asses their impact on vulnerable wildlife habitat.\nThis study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss. Wildfire damages intersect with protected areas will also be evaluated, to determine whether existing conservation frameworks are effectively safeguarding the Barbary Macaque."
   },
   {
     "objectID": "index.html#data",
     "href": "index.html#data",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "Data:",
     "text": "Data:"
   },
   {
     "objectID": "index.html#esa-world-cover-for-tree-cover-data",
     "href": "index.html#esa-world-cover-for-tree-cover-data",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "1. ESA World Cover For Tree Cover Data",
-    "text": "1. ESA World Cover For Tree Cover Data\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover."
+    "text": "1. ESA World Cover For Tree Cover Data\nLand cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.\n\n\nShow Code\n#1 Download ESA landcover to desired extent\nlancov_extent &lt;- get_esa_wc(bbox = boundbox_poly, year = 2021, datatype = \"landcover\", mask = TRUE, quiet = TRUE )\n#plot(lancov_extent) to view \n# 1.2 isolate tree cover data: numeric code \"10\"\ntree_cover &lt;- ifel(lancov_extent == 10, lancov_extent, NA) # 1.3 treats all other data as NA \nlevels(tree_cover) &lt;- data.frame(id = 10, cover = \"Tree Cover\") # 1.4 renames legend to \"tree_cover\" \nplot(tree_cover, main = \"Tree Cover In Northeast Algeria\", col = \"forestgreen\")"
   },
   {
     "objectID": "index.html#species-occurrence-points",
     "href": "index.html#species-occurrence-points",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "2. Species Occurrence Points",
-    "text": "2. Species Occurrence Points\nOccurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page."
+    "text": "2. Species Occurrence Points\nOccurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page.\n\n\nShow Code\n#2. Download species point data at desired extent \nbounding_box &lt;- st_as_text(boundbox_poly) # 2.1 translates polygon to text  \nocc_data &lt;- occ_search(scientificName = \"Macaca sylvanus\", hasCoordinate = TRUE, geometry = bounding_box ) # 2.2 pulls occurence data with coord info within bounding box \nocc_df &lt;- occ_data$data # 2.3 extracts cleaned observation records \nocc_sf &lt;- st_as_sf(occ_df, \n                   coords = c(\"decimalLongitude\", \"decimalLatitude\"), \n                   crs = 4326, \n                   remove = FALSE) # 2.4 converts occurence data to sf object \n\n# == 2.5 run a test plot to see if points fall in desired study area == # \nplot(tree_cover, main = \"Tree Cover & Macaca sylvanus Occurrences\", col = \"forestgreen\")\nplot(st_geometry(occ_sf), col = \"orange\", pch = 16, cex = 0.5, add = TRUE)"
   },
   {
     "objectID": "index.html#species-range-map",
     "href": "index.html#species-range-map",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "3. Species Range Map",
-    "text": "3. Species Range Map\nHabitat range as defined by the IUCN red list."
+    "text": "3. Species Range Map\nHabitat range as defined by the IUCN red list.\n\n\nShow Code\n#3. Download IUCN redlist species bounds at desired extent \nIUCN_range &lt;- st_read(\"data/MacacaSylHab_range/T12561A50043570.gpkg\") # 3.1 read in range data \nmacaque_range &lt;- st_transform(IUCN_range, crs = 4326) |&gt; st_crop(boundbox_poly) # 3.2 crop to study area \n\n# == 3.3 run a test plot to ensure study area covers range == # \nplot(tree_cover, main = \"Tree Cover & IUCN Macaque Range\", col = \"forestgreen\")\nplot(st_geometry(macaque_range), border = \"red\", lwd = 1.0, add = TRUE) #note to self : make some adjustments to bounding_box"
   },
   {
     "objectID": "index.html#burned-area-data",
     "href": "index.html#burned-area-data",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "4. Burned Area Data",
-    "text": "4. Burned Area Data\nVIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season)."
+    "text": "4. Burned Area Data\nVIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).\n\n\nShow Code\n#4. Download burned area dataset at desired extent \n#The \"Burned area\" folder contains five files, they will need to be combined into a single sf for ploting. \nburn_files &lt;- list.files(\"data/Burned_area\", pattern = \"\\\\.hdf$\", full.names = TRUE) \ndates &lt;- unique(regmatches(basename(burn_files), regexpr(\"A[0-9]{7}\", basename(burn_files))))# 4.1 extract unique dates from burn_files \nburn_rasters &lt;- lapply(dates, function(fire_date){ # 4.2 lapply() to assign text string \"fire_date\" to unique dates in burn_files \n  date_files &lt;- grep(fire_date, burn_files, value = TRUE) # 4.3 finds which file paths contain text string \"fire_date\" & groups files with the same date \n  rasters &lt;- lapply(date_files, function(f) {\n    rast(f, subds = 1) \n  }) # 4.4 searches through grouped files, extracts subds = 1 which contains burn data \n  if (length(rasters) &gt; 1) {\n    do.call(mosaic, rasters)\n  } else {\n    rasters[[1]]\n  }\n}) # 4.5 ensure that if multiple files exisit for the same date, they are combined \nburned_total &lt;- app(rast(burn_rasters), fun = max, na.rm = TRUE)\nburned_total[burned_total &lt;= 0] &lt;- NA # 4.6 turn non-fire pixels into NA values \nburned_poly &lt;- as.polygons(burned_total, dissolve = TRUE)# 4.7 convert burned_total to a polygon\nburned_sf &lt;- st_as_sf(burned_poly) |&gt; \n  st_transform(st_crs(boundbox_poly)) |&gt;\n  st_make_valid() |&gt; \n  st_intersection(boundbox_poly) # 4.6 convert to sf file and crop to bounding box \n\n##== 4.7 run a test plot == ## \n\nplot(tree_cover, col= \"forestgreen\", main = \"Burned Areas in Northeast Algeria: Summer of 2026 \")\nplot(st_geometry(burned_sf), pch = 4, col = \"red\", cex = 0.6, add = TRUE)"
   },
   {
     "objectID": "index.html#protected-areas",
     "href": "index.html#protected-areas",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "5. Protected Areas",
-    "text": "5. Protected Areas\nWorld Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026)."
+    "text": "5. Protected Areas\nWorld Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026).\n\n\nShow Code\n#5. Download protected area dataset at desired extent \ngdb_file &lt;- \"data/WDPA_gdp/WDPA_WDOECM_Nov2026_Public_DZA.gdb\"\n# 5.1 Note to self:used st_layers(gdb_file) to read what the folder contains \nprotected_areas_sf &lt;- st_read(gdb_file, layer = \"WDPA_WDOECM_poly_Nov2026_DZA\") # 5.2 convert WDPA polygon to sf\nprotected_areas &lt;- st_intersection(protected_areas_sf, boundbox_poly) # 5.2 crop to bounding box \n\n## == 5.3 run a test plot == ##\nplot(tree_cover[[1]], main = \"Protected Areas\", col = \"forestgreen\")\nplot(st_geometry(protected_areas), col = \"gold\", add = TRUE )"
   },
   {
     "objectID": "index.html#creating-a-suitable-habitat-raster",
     "href": "index.html#creating-a-suitable-habitat-raster",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "1. Creating a suitable habitat raster",
-    "text": "1. Creating a suitable habitat raster"
+    "text": "1. Creating a suitable habitat raster\n\n\nShow Code\n#1. Create assumed suitable macaque habitat \nmacaque_habitat_raster &lt;- mask(tree_cover, vect(macaque_range)) \nplot(macaque_habitat_raster, main = \"Macaque Habitat \", col = \"forestgreen\")\n\n\n\n\n\n\n\n\n\nShow Code\n#2. Convert habitat raster to a sf to calculate area \nhabitat_sf &lt;- macaque_habitat_raster |&gt; \n  as.polygons() |&gt; \n  st_as_sf()\nhab_area &lt;- st_area(habitat_sf)#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2"
   },
   {
     "objectID": "index.html#calculating-total-habitat-burned",
     "href": "index.html#calculating-total-habitat-burned",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "2. Calculating total habitat burned",
-    "text": "2. Calculating total habitat burned\n\nburned_sf &lt;- st_make_valid(burned_sf)\nhabitat_sf &lt;- st_make_valid(habitat_sf)\n#1. Calculate the overlap of burned area and macaque habitat \nburned_hab_union &lt;- st_union(burned_sf) # 1.1 combine burned area into one combined total \nburned_hab_union &lt;- st_make_valid(burned_hab_union)\n# 1.2 intersect burned area with habitat \nburned_hab &lt;- st_intersection(burned_hab_union, habitat_sf)\n# 1.2.1 - check by running plot(burned_hab)\n# 1.3 calculate total area burned \nburned_area &lt;- burned_hab |&gt; \n  st_as_sf() |&gt;  # 1.3.1 convert burned_hab back into an sf before passing to st_area \n  mutate(burned_area = st_area(x)) # 1.3.2 x notates the single column in burned_hab \n\n# burned_area is approx. 40.5km2 \n# 1.4 find percent habitat burned \n\npercent_burned &lt;- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 \n\n# percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good!"
+    "text": "2. Calculating total habitat burned\n\n\nShow Code\nburned_sf &lt;- st_make_valid(burned_sf)\nhabitat_sf &lt;- st_make_valid(habitat_sf)\n#2. Calculate the overlap of burned area and macaque habitat \nburned_hab_union &lt;- st_union(burned_sf) # 1.1 combine burned area into one combined total \nburned_hab_union &lt;- st_make_valid(burned_hab_union)\n# 2.2 intersect burned area with habitat \nburned_hab &lt;- st_intersection(burned_hab_union, habitat_sf)\n# 2.2.1 - check by running plot(burned_hab)\n# 2.3 calculate total area burned \nburned_area &lt;- burned_hab |&gt; \n  st_as_sf() |&gt;  # 1.3.1 convert burned_hab back into an sf before passing to st_area \n  mutate(burned_area = st_area(x)) # 1.3.2 x notates the single column in burned_hab \n\n# burned_area is approx. 40.5km2 \n# 2.4 find percent habitat burned \n\npercent_burned &lt;- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 \n\n# percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good!"
   },
   {
     "objectID": "index.html#calculating-protected-areas-burned",
     "href": "index.html#calculating-protected-areas-burned",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "3. Calculating protected areas burned",
     "text": "3. Calculating protected areas burned\n\nplan to –&gt; find intersect of protected areas and habitat (how much of macaque habitat actually falls in protected areas)\nfind total area of protected habitat burned (follow work flow from step 2)\nfind how much of protected area intersect with actual macaque habitat was burned"
   },
   {
     "objectID": "index.html#validation-with-species-occurrence-points",
     "href": "index.html#validation-with-species-occurrence-points",
-    "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
+    "title": "Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "4. validation with species occurrence points",
     "text": "4. validation with species occurrence points\nNotes: did not specify year when pulling occurrence data from GBIF, I’m going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet."
   },
