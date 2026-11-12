@@ -235,15 +235,62 @@ plot(st_geometry(protected_areas), col = "gold", add = TRUE )
 #1. Create assumed suitable macaque habitat 
 macaque_habitat_raster <- mask(tree_cover, vect(macaque_range)) 
 plot(macaque_habitat_raster, main = "Macaque Habitat ", col = "forestgreen")
+#2. Convert habitat raster to a sf to calculate area 
+habitat_sf <- macaque_habitat_raster |> 
+  as.polygons() |> 
+  st_as_sf()
+hab_area <- st_area(habitat_sf)#Macaque Habitat covers an area of 648879725 square meters 
+
 ```
 
-# \[\~200 words\]
+## 2. Calculating total habitat burned 
 
-Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.
+```{r}
+#| warning: false 
+#| error: false
+#| results: false
+burned_sf <- st_make_valid(burned_sf)
+habitat_sf <- st_make_valid(habitat_sf)
+#1. Calculate the overlap of burned area and macaque habitat 
+burned_hab_union <- st_union(burned_sf) # 1.1 combine burned area into one combined total 
+burned_hab_union <- st_make_valid(burned_hab_union)
+# 1.2 intersect burned area with habitat 
+burned_hab <- st_intersection(burned_hab_union, habitat_sf)
+# 1.2.1 - check by running plot(burned_hab)
+# 1.3 calculate total area burned 
+burned_area <- burned_hab |> 
+  st_as_sf() |>  # 1.3.1 convert burned_hab back into an sf before passing to st_area 
+  mutate(burned_area = st_area(x)) # 1.3.2 x notates the single column in burned_hab 
 
-Show tables, plots, etc. and describe them.
+# burned_area is approx. 40.5km2 
+# 1.4 find percent habitat burned 
 
-### Dygraphs Example
+percent_burned <- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 
+
+# percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good! 
+
+
+```
+
+## 3. Calculating protected areas burned 
+
+1.  plan to –\> find intersect of protected areas and habitat (how much of macaque habitat actually falls in protected areas)
+
+2.  find total area of protected habitat burned (follow work flow from step 2)
+
+3.  find how much of protected area intersect with actual macaque habitat was burned
+
+## 4. validation with species occurrence points
+
+Notes: did not specify year when pulling occurrence data from GBIF, I'm going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet.
+
+# Results 
+
+1.  table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned
+
+2.  Final map/visual with all data layered
+
+### 
 
 # Conclusions
 
@@ -251,6 +298,6 @@ Show tables, plots, etc. and describe them.
 
 Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.
 
-# References
+# Limitations 
 
-All sources are cited in a consistent manner
+# References
