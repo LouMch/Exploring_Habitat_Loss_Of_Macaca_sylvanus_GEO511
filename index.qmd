@@ -1,16 +1,19 @@
 ---
-title: "Wildfire Exposure Assesment For Algerian Barbary Macaques (*Macaca sylvanus*)"
-format: html 
-theme: solar 
+title: "Wildfire Exposure Assessment For Algerian Barbary Macaques (*Macaca sylvanus*)"
+format: 
+  html:
+    theme: solar
+    code-fold: true
+    code-summary: "Show Code"
 author: Louiza Mohamed-Cherif 
-subtitle: "A spatial assesment of Barbary Macaque habitat overlap with 2026 wildfires in Northeastern Algeria"
+subtitle: "A spatial assessment of Barbary Macaque habitat overlap with 2026 wildfires in Northeastern Algeria"
 date: today
 date-format: long
 ---
 
 # Introduction
 
-The Barbary Macaque (*Macaca sylvanus*)  is North Africa’s only primate and has been classified as endangered by the [IUCN Red list](https://www.iucnredlist.org/search?query=Macaca%20sylvanus&searchType=species) as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.
+The Barbary Macaque (*Macaca sylvanus*)  is North Africa’s only primate and has been classified as endangered by the [IUCN Red list](https://www.iucnredlist.org/search?query=Macaca%20sylvanus&searchType=species) as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven primarily by tourism.
 
 ```{r}
 #| echo: false
@@ -24,7 +27,7 @@ knitr::include_graphics("data/monkey.png")
 
 ```
 
-Algeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.
+Algeria holds nearly 25% of the Barbary Macaque’s global population, however there is a crucial need for new reviews as a comprehensive census of the existing populations within the country does not exist ([Boumenir et al ., 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/#B1-animals-15-01860)) Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap significantly with what remains of Algerian macaque habitat.
 
 ```{r}
 #| echo: false
@@ -38,23 +41,23 @@ knitr::include_graphics("data/fire_image.jpeg")
 
 ```
 
-In the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.
+In the summer of 2026 [nearly 160 wildfires broke out within a 24 hour period](https://reliefweb.int/report/algeria/dza-fire-07-2026-algeria-wildfires-july-2026-2026-07-22), stretching along the coastline of Algeria. These fires were felt across the north-eastern, central, and western portions of the country, with the highest intensity occurring in the north-east. The rapid scale and severity of these fires within such a short time frame signifies an urgent need to asses their impact on vulnerable wildlife habitat.
+
+This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss. Wildfire damages intersect with protected areas will also be evaluated, to determine whether existing conservation frameworks are effectively safeguarding the Barbary Macaque.
 
 # Methods
 
-1.  AOI was defined as a bounding of approximately \_\_\_ km surrounding the forested coastline of Northeast Algeria. This region encompasses \_\_ and \_\_\_ . It contains\_\_\_ protected area \_\_ % see fig.()
+1.  The area of interest was first defined as a region of approximately 50,028.83km^2^, surrounding the forested coastline of northeast Algeria. The AOI contains about 2092km^2^ of protected land; It encompasses nearly the entirity of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).
 
-2.  relevant data sets are cleaned and cropped to study area
+2.  Relevant data sets pertaining to land cover class, burned area, species range, known protected land, and occurrence (?) were cleaned and cropped to a bounding box within the study area.
 
-3.  Identify suitable habitat range
+3.  Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648\~ km\^2 within the study region.
 
-4.  The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection, the total square km of habitat exposed to fire was then calculated using st_area.
+4.  The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection(), the total square km of habitat exposed to fire was then calculated using st_area().
 
-5.  Intersect and area was calculated for protected areas.
+5.  Intersect with burned and area was calculated for protected areas.
 
-6.  Known species observations were used to confirm areas of worst M. sylvanus exposure ..
-
-## Data:
+6.  known species occurrence points (?)
 
 ```{r}
 #| echo: false
@@ -76,6 +79,8 @@ library(dplyr)
 library(dygraphs)
 ```
 
+## Data:
+
 ```{r}
 #| echo: false
 #| warning: false
@@ -95,6 +100,11 @@ boundbox_coords <- c( xmin = 3.0,
 boundbox_poly <- st_as_sfc(st_bbox(boundbox_coords, crs = 4326))
 #view(boundbox_poly) # 2.2 check that polygon returns intended geography
 #plot(boundbox_poly) # 2.3 draws a rectangle with no data
+#3. find the area of the bounding box 
+#boundbox_projected <- st_transform(boundbox_poly, crs = 32632)
+#area_m2 <- st_area(boundbox_projected)
+#area_m2  
+
 ```
 
 ## 1. ESA World Cover For Tree Cover Data
@@ -102,9 +112,8 @@ boundbox_poly <- st_as_sfc(st_bbox(boundbox_coords, crs = 4326))
 Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.
 
 ```{r}
-#| echo: false
 #| label: download_landcover
-#| cache: false 
+#| cache: false
 #| warning: false 
 #| message: false
 #| results: false
@@ -120,10 +129,9 @@ plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 
 ## 2. Species Occurrence Points
 
-Plot occurrence points of Barbary Macaque \*add details
+Occurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page.
 
 ```{r}
-#| echo: false
 #| label: download_occ_pt
 #| cache: false
 #| warning: false 
@@ -145,8 +153,9 @@ plot(st_geometry(occ_sf), col = "orange", pch = 16, cex = 0.5, add = TRUE)
 
 ## 3. Species Range Map
 
+Habitat range as defined by the IUCN red list.
+
 ```{r}
-#| echo: false
 #| label: download_sp_range
 #| cache: false
 #| warning: false 
@@ -163,10 +172,9 @@ plot(st_geometry(macaque_range), border = "red", lwd = 1.0, add = TRUE) #note to
 
 ## 4. Burned Area Data
 
-VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026
+VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).
 
 ```{r}
-#| echo: false 
 #| warning: false 
 #| message: false 
 #| results: false
@@ -205,8 +213,9 @@ plot(st_geometry(burned_sf), pch = 4, col = "red", cex = 0.6, add = TRUE)
 
 ## 5. Protected Areas
 
+World Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026).
+
 ```{r}
-#| echo: false
 #| label: download_protected_areas
 #| cache: true
 #| warning: false
@@ -221,6 +230,7 @@ protected_areas <- st_intersection(protected_areas_sf, boundbox_poly) # 5.2 crop
 ## == 5.3 run a test plot == ##
 plot(tree_cover[[1]], main = "Protected Areas", col = "forestgreen")
 plot(st_geometry(protected_areas), col = "gold", add = TRUE )
+
 ```
 
 # Data Processing & Analysis
@@ -228,7 +238,6 @@ plot(st_geometry(protected_areas), col = "gold", add = TRUE )
 ## 1. Creating a suitable habitat raster
 
 ```{r}
-#| echo: false
 #| warning: false 
 #| error: false
 #| results: false
@@ -239,40 +248,37 @@ plot(macaque_habitat_raster, main = "Macaque Habitat ", col = "forestgreen")
 habitat_sf <- macaque_habitat_raster |> 
   as.polygons() |> 
   st_as_sf()
-hab_area <- st_area(habitat_sf)#Macaque Habitat covers an area of 648879725 square meters 
+hab_area <- st_area(habitat_sf)#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 
 
 ```
 
-## 2. Calculating total habitat burned 
+## 2. Calculating total habitat burned
 
 ```{r}
-#| warning: false 
-#| error: false
-#| results: false
+
 burned_sf <- st_make_valid(burned_sf)
 habitat_sf <- st_make_valid(habitat_sf)
-#1. Calculate the overlap of burned area and macaque habitat 
+#2. Calculate the overlap of burned area and macaque habitat 
 burned_hab_union <- st_union(burned_sf) # 1.1 combine burned area into one combined total 
 burned_hab_union <- st_make_valid(burned_hab_union)
-# 1.2 intersect burned area with habitat 
+# 2.2 intersect burned area with habitat 
 burned_hab <- st_intersection(burned_hab_union, habitat_sf)
-# 1.2.1 - check by running plot(burned_hab)
-# 1.3 calculate total area burned 
+# 2.2.1 - check by running plot(burned_hab)
+# 2.3 calculate total area burned 
 burned_area <- burned_hab |> 
   st_as_sf() |>  # 1.3.1 convert burned_hab back into an sf before passing to st_area 
   mutate(burned_area = st_area(x)) # 1.3.2 x notates the single column in burned_hab 
 
 # burned_area is approx. 40.5km2 
-# 1.4 find percent habitat burned 
+# 2.4 find percent habitat burned 
 
 percent_burned <- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 
 
 # percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good! 
 
-
 ```
 
-## 3. Calculating protected areas burned 
+## 3. Calculating protected areas burned
 
 1.  plan to –\> find intersect of protected areas and habitat (how much of macaque habitat actually falls in protected areas)
 
@@ -284,7 +290,7 @@ percent_burned <- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100
 
 Notes: did not specify year when pulling occurrence data from GBIF, I'm going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet.
 
-# Results 
+# Results
 
 1.  table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned
 
@@ -294,10 +300,6 @@ Notes: did not specify year when pulling occurrence data from GBIF, I'm going to
 
 # Conclusions
 
-\[\~200 words\]
-
-Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.
-
-# Limitations 
+# Limitations
 
 # References
