@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Louiza Mohamed-Cherif">
-<meta name="dcterms.date" content="2026-11-11">
+<meta name="dcterms.date" content="2026-11-12">
 
 <title>Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)</title>
 <style>
@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2026</p>
+      <p class="date">November 12, 2026</p>
     </div>
   </div>
   
@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>The Barbary Macaque (<em>Macaca sylvanus</em>)&nbsp; is North Africa’s only primate and has been classified as endangered by the <a href="https://www.iucnredlist.org/search?query=Macaca%20sylvanus&amp;searchType=species">IUCN Red list</a> as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.</p>
+<p>The Barbary Macaque (<em>Macaca sylvanus</em>)&nbsp; is North Africa’s only primate and has been classified as endangered by the <a href="https://www.iucnredlist.org/search?query=Macaca%20sylvanus&amp;searchType=species">IUCN Red list</a> as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven primarily by tourism.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -196,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Algeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.</p>
+<p>Algeria holds nearly 25% of the Barbary Macaque’s global population, however there is a crucial need for new reviews as a comprehensive census of the existing populations within the country does not exist (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/#B1-animals-15-01860">Boumenir et al ., 2025</a>) Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap significantly with what remains of Algerian macaque habitat.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -207,17 +207,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>In the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss.</p>
+<p>In the summer of 2026 <a href="https://reliefweb.int/report/algeria/dza-fire-07-2026-algeria-wildfires-july-2026-2026-07-22">nearly 160 wildfires broke out within a 24 hour period</a>, stretching along the coastline of Algeria. These fires were felt across the north-eastern, central, and western portions of the country, with the highest intensity occurring in the north-east. The rapid scale and severity of these fires within such a short time frame signifies an urgent need to asses their impact on vulnerable wildlife habitat.</p>
+<p>This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss. Wildfire damages intersect with protected areas will also be evaluated, to determine whether existing conservation frameworks are effectively safeguarding the Barbary Macaque.</p>
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <ol type="1">
-<li><p>AOI was defined as a bounding of approximately ___ km surrounding the forested coastline of Northeast Algeria. This region encompasses __ and ___ . It contains___ protected area __ % see fig.()</p></li>
-<li><p>relevant data sets are cleaned and cropped to study area</p></li>
-<li><p>Identify suitable habitat range</p></li>
-<li><p>The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection, the total square km of habitat exposed to fire was then calculated using st_area.</p></li>
-<li><p>Intersect and area was calculated for protected areas.</p></li>
-<li><p>Known species observations were used to confirm areas of worst M. sylvanus exposure ..</p></li>
+<li><p>The area of interest was first defined as a region of approximately 50,028.83km<sup>2</sup>, surrounding the forested coastline of northeast Algeria. The AOI contains about 2092km<sup>2</sup> of protected land; It encompasses nearly the entirity of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).</p></li>
+<li><p>Relevant data sets pertaining to land cover class, burned area, species range, known protected land, and occurrence (?) were cleaned and cropped to a bounding box within the study area.</p></li>
+<li><p>Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648~ km^2 within the study region.</p></li>
+<li><p>The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection(), the total square km of habitat exposed to fire was then calculated using st_area().</p></li>
+<li><p>Intersect with burned and area was calculated for protected areas.</p></li>
+<li><p>known species occurrence points (?)</p></li>
 </ol>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data:</h2>
@@ -237,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="species-occurrence-points" class="level2">
 <h2 class="anchored" data-anchor-id="species-occurrence-points">2. Species Occurrence Points</h2>
-<p>Plot occurrence points of Barbary Macaque *add details</p>
+<p>Occurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -250,6 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="species-range-map" class="level2">
 <h2 class="anchored" data-anchor-id="species-range-map">3. Species Range Map</h2>
+<p>Habitat range as defined by the IUCN red list.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -262,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="burned-area-data" class="level2">
 <h2 class="anchored" data-anchor-id="burned-area-data">4. Burned Area Data</h2>
-<p>VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026</p>
+<p>VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -275,6 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="protected-areas" class="level2">
 <h2 class="anchored" data-anchor-id="protected-areas">5. Protected Areas</h2>
+<p>World Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -349,8 +352,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="conclusions" class="level1">
 <h1>Conclusions</h1>
-<p>[~200 words]</p>
-<p>Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>

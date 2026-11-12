@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "",
-    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven by tourism.\n\n\n\n\n\nBarbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif\n\n\n\n\nAlgeria holds nearly 25% of the Barbary Macaque’s population, however there is a crucial need for new reviews of Algerian macaque populations as a recent comprehensive census of the existing populations within the country does not exist (Boumenir et. al , 2025). Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap with Algerian macaque habitat.\n\n\n\n\n\nA wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News\n\n\n\n\nIn the summer of 2026 nearly 160 wildfires broke out along the northeastern coast of Algeria. This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss."
+    "text": "The Barbary Macaque (Macaca sylvanus)  is North Africa’s only primate and has been classified as endangered by the IUCN Red list as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven primarily by tourism.\n\n\n\n\n\nBarbary Macaques pictured in the Chiffa Gorge in Blida, Algeria. Photo: Louiza Mohamed-Cherif\n\n\n\n\nAlgeria holds nearly 25% of the Barbary Macaque’s global population, however there is a crucial need for new reviews as a comprehensive census of the existing populations within the country does not exist (Boumenir et al ., 2025) Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap significantly with what remains of Algerian macaque habitat.\n\n\n\n\n\nA wildfire across a forested mountain in Northeast Algeria. Photo: Hafid Derradji/Facebook via Morocco World News\n\n\n\n\nIn the summer of 2026 nearly 160 wildfires broke out within a 24 hour period, stretching along the coastline of Algeria. These fires were felt across the north-eastern, central, and western portions of the country, with the highest intensity occurring in the north-east. The rapid scale and severity of these fires within such a short time frame signifies an urgent need to asses their impact on vulnerable wildlife habitat.\nThis study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss. Wildfire damages intersect with protected areas will also be evaluated, to determine whether existing conservation frameworks are effectively safeguarding the Barbary Macaque."
   },
   {
     "objectID": "index.html#data",
@@ -32,28 +32,28 @@
     "href": "index.html#species-occurrence-points",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "2. Species Occurrence Points",
-    "text": "2. Species Occurrence Points\nPlot occurrence points of Barbary Macaque *add details"
+    "text": "2. Species Occurrence Points\nOccurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page."
   },
   {
     "objectID": "index.html#species-range-map",
     "href": "index.html#species-range-map",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "3. Species Range Map",
-    "text": "3. Species Range Map"
+    "text": "3. Species Range Map\nHabitat range as defined by the IUCN red list."
   },
   {
     "objectID": "index.html#burned-area-data",
     "href": "index.html#burned-area-data",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "4. Burned Area Data",
-    "text": "4. Burned Area Data\nVIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026"
+    "text": "4. Burned Area Data\nVIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season)."
   },
   {
     "objectID": "index.html#protected-areas",
     "href": "index.html#protected-areas",
     "title": "Wildfire Exposure Assesment For Algerian Barbary Macaques (Macaca sylvanus)",
     "section": "5. Protected Areas",
-    "text": "5. Protected Areas"
+    "text": "5. Protected Areas\nWorld Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026)."
   },
   {
     "objectID": "index.html#creating-a-suitable-habitat-raster",
