@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Louiza Mohamed-Cherif">
-<meta name="dcterms.date" content="2026-11-12">
+<meta name="dcterms.date" content="2026-11-13">
 
 <title>Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus) – Wildfire Exposure Assesment For Algerian Barbary Macaques (*Macaca sylvanus*)</title>
 <style>
@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 12, 2026</p>
+      <p class="date">November 13, 2026</p>
     </div>
   </div>
   
@@ -303,33 +303,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#4. Download burned area dataset at desired extent </span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#The "Burned area" folder contains five files, they will need to be combined into a single sf for ploting. </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>burn_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/Burned_area"</span>, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.hdf$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">regmatches</span>(<span class="fu">basename</span>(burn_files), <span class="fu">regexpr</span>(<span class="st">"A[0-9]{7}"</span>, <span class="fu">basename</span>(burn_files))))<span class="co"># 4.1 extract unique dates from burn_files </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>burn_rasters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dates, <span class="cf">function</span>(fire_date){ <span class="co"># 4.2 lapply() to assign text string "fire_date" to unique dates in burn_files </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  date_files <span class="ot">&lt;-</span> <span class="fu">grep</span>(fire_date, burn_files, <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="co"># 4.3 finds which file paths contain text string "fire_date" &amp; groups files with the same date </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  rasters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(date_files, <span class="cf">function</span>(f) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(f, <span class="at">subds =</span> <span class="dv">1</span>) </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  }) <span class="co"># 4.4 searches through grouped files, extracts subds = 1 which contains burn data </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(rasters) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do.call</span>(mosaic, rasters)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    rasters[[<span class="dv">1</span>]]</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># 4.5 ensure that if multiple files exisit for the same date, they are combined </span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>burned_total <span class="ot">&lt;-</span> <span class="fu">app</span>(<span class="fu">rast</span>(burn_rasters), <span class="at">fun =</span> max, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>burned_total[burned_total <span class="sc">&lt;=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># 4.6 turn non-fire pixels into NA values </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>burned_poly <span class="ot">&lt;-</span> <span class="fu">as.polygons</span>(burned_total, <span class="at">dissolve =</span> <span class="cn">TRUE</span>)<span class="co"># 4.7 convert burned_total to a polygon</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(burned_poly) <span class="sc">|&gt;</span> </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(boundbox_poly)) <span class="sc">|&gt;</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_intersection</span>(boundbox_poly) <span class="co"># 4.6 convert to sf file and crop to bounding box </span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="do">##== 4.7 run a test plot == ## </span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_cover, <span class="at">col=</span> <span class="st">"forestgreen"</span>, <span class="at">main =</span> <span class="st">"Burned Areas in Northeast Algeria: Summer of 2026 "</span>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(burned_sf), <span class="at">pch =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.6</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|echo: false</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: false</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#4. Download burned area dataset at desired extent </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#The "Burned area" folder contains five files, they will need to be combined into a single sf for ploting. </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>burn_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/Burned_area"</span>, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.hdf$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">regmatches</span>(<span class="fu">basename</span>(burn_files), <span class="fu">regexpr</span>(<span class="st">"A[0-9]{7}"</span>, <span class="fu">basename</span>(burn_files))))<span class="co"># 4.1 extract unique dates from burn_files </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>burn_rasters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(dates, <span class="cf">function</span>(fire_date){ <span class="co"># 4.2 lapply() to assign text string "fire_date" to unique dates in burn_files </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  date_files <span class="ot">&lt;-</span> <span class="fu">grep</span>(fire_date, burn_files, <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="co"># 4.3 finds which file paths contain text string "fire_date" &amp; groups files with the same date </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  rasters <span class="ot">&lt;-</span> <span class="fu">lapply</span>(date_files, <span class="cf">function</span>(f) {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(f, <span class="at">subds =</span> <span class="dv">1</span>) </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  }) <span class="co"># 4.4 searches through grouped files, extracts subds = 1 which contains burn data </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(rasters) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do.call</span>(mosaic, rasters)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    rasters[[<span class="dv">1</span>]]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># 4.5 ensure that if multiple files exisit for the same date, they are combined </span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>burned_total <span class="ot">&lt;-</span> <span class="fu">app</span>(<span class="fu">rast</span>(burn_rasters), <span class="at">fun =</span> max, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>burned_total[burned_total <span class="sc">&lt;=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># 4.6 turn non-fire pixels into NA values </span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>burned_poly <span class="ot">&lt;-</span> <span class="fu">as.polygons</span>(burned_total, <span class="at">dissolve =</span> <span class="cn">TRUE</span>)<span class="co"># 4.7 convert burned_total to a polygon</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(burned_poly) <span class="sc">|&gt;</span> </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(boundbox_poly)) <span class="sc">|&gt;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_intersection</span>(boundbox_poly) <span class="co"># 4.6 convert to sf file and crop to bounding box </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attribute variables are assumed to be spatially constant throughout
+all geometries</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">##== 4.7 run a test plot == ## </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_cover, <span class="at">col=</span> <span class="st">"forestgreen"</span>, <span class="at">main =</span> <span class="st">"Burned Areas in Northeast Algeria: Summer of 2026 "</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(burned_sf), <span class="at">pch =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">cex =</span> <span class="fl">0.6</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -346,15 +356,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#5. Download protected area dataset at desired extent </span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gdb_file <span class="ot">&lt;-</span> <span class="st">"data/WDPA_gdp/WDPA_WDOECM_Nov2026_Public_DZA.gdb"</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 5.1 Note to self:used st_layers(gdb_file) to read what the folder contains </span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>protected_areas_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(gdb_file, <span class="at">layer =</span> <span class="st">"WDPA_WDOECM_poly_Nov2026_DZA"</span>) <span class="co"># 5.2 convert WDPA polygon to sf</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>protected_areas <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_areas_sf, boundbox_poly) <span class="co"># 5.2 crop to bounding box </span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## == 5.3 run a test plot == ##</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_cover[[<span class="dv">1</span>]], <span class="at">main =</span> <span class="st">"Protected Areas"</span>, <span class="at">col =</span> <span class="st">"forestgreen"</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(protected_areas), <span class="at">col =</span> <span class="st">"gold"</span>, <span class="at">add =</span> <span class="cn">TRUE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#5. Download protected area dataset at desired extent </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>gdb_file <span class="ot">&lt;-</span> <span class="st">"data/WDPA_gdp/WDPA_WDOECM_Nov2026_Public_DZA.gdb"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 5.1 Note to self:used st_layers(gdb_file) to read what the folder contains </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>protected_areas_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(gdb_file, <span class="at">layer =</span> <span class="st">"WDPA_WDOECM_poly_Nov2026_DZA"</span>) <span class="co"># 5.2 convert WDPA polygon to sf</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>protected_areas <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_areas_sf, boundbox_poly) <span class="co"># 5.2 crop to bounding box </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## == 5.3 run a test plot == ##</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_cover[[<span class="dv">1</span>]], <span class="at">main =</span> <span class="st">"Protected Areas"</span>, <span class="at">col =</span> <span class="st">"forestgreen"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(protected_areas), <span class="at">col =</span> <span class="st">"gold"</span>, <span class="at">add =</span> <span class="cn">TRUE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -373,24 +383,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1. Create assumed suitable macaque habitat </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>macaque_habitat_raster <span class="ot">&lt;-</span> <span class="fu">mask</span>(tree_cover, <span class="fu">vect</span>(macaque_range)) </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(macaque_habitat_raster, <span class="at">main =</span> <span class="st">"Macaque Habitat "</span>, <span class="at">col =</span> <span class="st">"forestgreen"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1. Create assumed suitable macaque habitat </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>macaque_habitat_raster <span class="ot">&lt;-</span> <span class="fu">mask</span>(tree_cover, <span class="fu">vect</span>(macaque_range)) </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(macaque_habitat_raster, <span class="at">main =</span> <span class="st">"Macaque Habitat "</span>, <span class="at">col =</span> <span class="st">"forestgreen"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Convert habitat raster to a sf to calculate area </span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> macaque_habitat_raster <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.polygons</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>hab_area <span class="ot">&lt;-</span> <span class="fu">st_area</span>(habitat_sf)<span class="co">#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Convert habitat raster to a sf to calculate area </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> macaque_habitat_raster <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.polygons</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>hab_area <span class="ot">&lt;-</span> <span class="fu">st_area</span>(habitat_sf) <span class="co">#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -399,49 +409,120 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_sf)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(habitat_sf)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Calculate the overlap of burned area and macaque habitat </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(burned_sf) <span class="co"># 1.1 combine burned area into one combined total </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_hab_union)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.2 intersect burned area with habitat </span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>burned_hab <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(burned_hab_union, habitat_sf)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.2.1 - check by running plot(burned_hab)</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.3 calculate total area burned </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>burned_area <span class="ot">&lt;-</span> burned_hab <span class="sc">|&gt;</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span>  <span class="co"># 1.3.1 convert burned_hab back into an sf before passing to st_area </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">burned_area =</span> <span class="fu">st_area</span>(x)) <span class="co"># 1.3.2 x notates the single column in burned_hab </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># burned_area is approx. 40.5km2 </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.4 find percent habitat burned </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>percent_burned <span class="ot">&lt;-</span> (<span class="fu">as.numeric</span>(burned_area<span class="sc">$</span>burned_area)<span class="sc">/</span><span class="fu">as.numeric</span>(hab_area))<span class="sc">*</span><span class="dv">100</span> </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># percent_burned -- they lost 6.23% of habitat in the northeast in ONE SUMMER! That's not good! </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_sf)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(habitat_sf)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Calculate the overlap of burned area and macaque habitat </span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(burned_sf) <span class="co"># 1.1 union ensures burned area is one combined total </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_hab_union)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.2 intersect burned area with habitat </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>burned_hab <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(burned_hab_union, habitat_sf)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.2.1 - check by running plot(burned_hab)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.3 calculate total area burned </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>burned_area <span class="ot">&lt;-</span> burned_hab <span class="sc">|&gt;</span> </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span>  <span class="co"># 1.3.1 convert burned_hab back into an sf before passing to st_area </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">burned_area =</span> <span class="fu">st_area</span>(x)) <span class="co"># 1.3.2 "x" notates the geometry column in burned_hab, st_area is used to calculate the total area of the intersection - this can then passed into the percent calculation - burned_area is approx. 40.5km2 </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.4 find percent habitat burned </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>percent_burned <span class="ot">&lt;-</span> (<span class="fu">as.numeric</span>(burned_area<span class="sc">$</span>burned_area)<span class="sc">/</span><span class="fu">as.numeric</span>(hab_area))<span class="sc">*</span><span class="dv">100</span> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># percent_burned --  6.23% of habitat in the northeast was burned in ONE SUMMER! That's not good! </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="calculating-protected-areas-burned" class="level2">
 <h2 class="anchored" data-anchor-id="calculating-protected-areas-burned">3. Calculating protected areas burned</h2>
-<ol type="1">
-<li><p>plan to –&gt; find intersect of protected areas and habitat (how much of macaque habitat actually falls in protected areas)</p></li>
-<li><p>find total area of protected habitat burned (follow work flow from step 2)</p></li>
-<li><p>find how much of protected area intersect with actual macaque habitat was burned</p></li>
-</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#3. Find intersect of protected areas and habitat </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.1 follow same steps as when calculating total habitat burned </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>protected_areas <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(protected_areas)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>protected_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(protected_areas) </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>protected_union <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(protected_union) <span class="co"># 3.1.2 combine protected area + make valid so r does not run into processing issues later on </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>protected_hab <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_union, habitat_sf)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.2 check that everything plots correctly </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(st_geometry(protected_hab))</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.3 intersect burned habitat with protected habitat </span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>burned_protected_hab <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_union, burned_hab) </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>burned_protected_area <span class="ot">&lt;-</span> burned_protected_hab <span class="sc">|&gt;</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">burned_protected_area =</span> <span class="fu">st_area</span>(x)) </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.4 find percent of habitat that falls in protected area </span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>protected_hab_area <span class="ot">&lt;-</span> protected_hab <span class="sc">|&gt;</span> </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">protected_hab_area =</span> <span class="fu">st_area</span>(x)) <span class="co"># 3.4.1 find area covered by protected habitat </span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>percent_hab_protected <span class="ot">&lt;-</span> (<span class="fu">as.numeric</span>(protected_hab_area<span class="sc">$</span>protected_hab_area))<span class="sc">/</span> <span class="fu">as.numeric</span>(hab_area)<span class="sc">*</span><span class="dv">100</span> </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>percent_hab_protected</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36.26106</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.4.3 percent_hab_protected -- 36.21% of habitat falls in protected areas </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.5 find percent of TOTAL macaque habitat that is both burned and protected </span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Out of all macaque forest, how much was burned in protected land? </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>percent_total_hab_burned_protected <span class="ot">&lt;-</span> (<span class="fu">as.numeric</span>(burned_protected_area<span class="sc">$</span>burned_protected_area))<span class="sc">/</span> <span class="fu">as.numeric</span>(<span class="fu">sum</span>(hab_area))<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#percent_total_hab_burned_protected -- 3.5.1 protected land accounts for about 4.0% of total habitat loss- the majority of habitat loss occured within protected forest! </span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.6 find percent of PROTECTED macaque habitat that was burned </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Within protected areas, how much habitat was burned? </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>percent_burned_protected <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(burned_protected_area<span class="sc">/</span>protected_hab_area)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>percent_burned_protected <span class="co"># 3.6.1  percent_burned_protected --&gt; Out of protected habitat, 11.06% was burned! </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]       NA 11.06329</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.7 11.06% is pretty bad,  Lets find out the percent of protected areas in total that were burned: </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>burned_protected_all <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_union, burned_hab_union)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>burned_protected_area_all <span class="ot">&lt;-</span> burned_protected_all <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">burned_protected_area_all =</span> <span class="fu">st_area</span>(x))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>protected_areas_all <span class="ot">&lt;-</span> protected_union <span class="sc">|&gt;</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">protected_areas_all =</span> <span class="fu">st_area</span>(x))</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>percent_of_all_protected_burned <span class="ot">&lt;-</span> (<span class="fu">as.numeric</span>(burned_protected_area_all<span class="sc">$</span>burned_protected_area_all) <span class="sc">/</span> <span class="fu">as.numeric</span>(protected_areas_all<span class="sc">$</span>protected_areas_all)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.7.1 percent_of_all_protected_burned -- 4.67% of protected area was burned</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
-<section id="validation-with-species-occurrence-points" class="level2">
-<h2 class="anchored" data-anchor-id="validation-with-species-occurrence-points">4. validation with species occurrence points</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="final-validation-with-species-occurrence-points" class="level2">
+<h2 class="anchored" data-anchor-id="final-validation-with-species-occurrence-points">5. Final validation with species occurrence points</h2>
 <p>Notes: did not specify year when pulling occurrence data from GBIF, I’m going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet.</p>
 </section>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
+<section id="map-of-affected-macaque-habitat" class="level3">
+<h3 class="anchored" data-anchor-id="map-of-affected-macaque-habitat">1. Map of Affected Macaque Habitat</h3>
+</section>
+<section id="table" class="level3">
+<h3 class="anchored" data-anchor-id="table">2. Table</h3>
 <ol type="1">
 <li><p>table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned</p></li>
-<li><p>Final map/visual with all data layered</p></li>
+<li><p>Final map/visual with all data layered</p>
+<p>Nearly 64.2% of habitat loss occurred within protected forest, and 35.8% of loss occurred in unprotected forests.</p></li>
 </ol>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
+</section>
+</section>
+<section id="validation" class="level1">
+<h1>Validation</h1>
+<section id="sensitivity-check-re-sample-to-coarse-500m-grid" class="level2">
+<h2 class="anchored" data-anchor-id="sensitivity-check-re-sample-to-coarse-500m-grid">Sensitivity Check: Re-sample to coarse 500m grid</h2>
+<p>MODIS burn data is at a 500m resolution, while ESA World Cover is a 10m resolution. To ensure that burned habitat was not over-estimated due to this discrepancy, all layers were re sampled to a coarse 500m resolution, results were then compared.</p>
+<p>Discrepency is only about 0.06%, thus validating final results.</p>
 </section>
 </section>
 <section id="conclusions" class="level1">
@@ -450,8 +531,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
 </section>
-<section id="references" class="level1">
-<h1>References</h1>
+<section id="refrences" class="level1">
+<h1>Refrences</h1>
 
 
 </section>
