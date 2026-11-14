@@ -444,8 +444,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.6 find percent of PROTECTED macaque habitat that was burned </span></span>
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Within protected areas, how much habitat was burned? </span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>percent_burned_protected <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(burned_protected_area<span class="sc">/</span>protected_hab_area)<span class="sc">*</span><span class="dv">100</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>percent_burned_protected <span class="co"># 3.6.1  percent_burned_protected --&gt; Out of protected habitat, 11.06% was burned! </span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>percent_burned_protected <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(burned_protected_area<span class="sc">$</span>burned_protected_area<span class="sc">/</span>protected_hab_area<span class="sc">$</span>protected_hab_area)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#percent_burned_protected  3.6.1  percent_burned_protected --&gt; Out of protected habitat, 11.06% was burned! </span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.7 11.06% is pretty bad,  Lets find out the percent of protected areas in total that were burned: </span></span>
 <span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>burned_protected_all <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_union, burned_hab_union)</span>
@@ -479,19 +479,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="table" class="level3">
 <h3 class="anchored" data-anchor-id="table">2. Table</h3>
+<div class="cell" data-tbl-cap="Summer 2026 Fire Impact On Barbary Macaque (macaca sylvanus) Habitat In Northeast Algeria" data-tbl-align="center">
+<details class="code-fold">
+<summary>Show Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2.1 Convert area calculations from m^2 to Km^2 </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#macaque habitat areas (km^2)</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>total_hab_km <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(hab_area))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>burned_hab_km <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(burned_area<span class="sc">$</span>burned_area))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>protected_hab_km2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(protected_hab_area<span class="sc">$</span>protected_hab_area))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>burned_protected_area_km2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(burned_protected_area<span class="sc">$</span>burned_protected_area))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#overall protected area totals (km^2)</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>total_protected_area_km2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(protected_areas_all<span class="sc">$</span>protected_areas_all))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>burned_protected_area_all_km2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(burned_protected_area_all<span class="sc">$</span>burned_protected_area_all))<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>result_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> <span class="at">category =</span> <span class="fu">c</span>( </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">"Total Suitable Macaque Habitat "</span>, </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">"Macaque Habitat Within Protected Areas"</span>, </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">"Total Protected Areas"</span>), </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Area_km2 =</span> <span class="fu">c</span>( total_hab_km, </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                      protected_hab_km2, </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                      total_protected_area_km2 </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                      </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">Burned_Area_km2 =</span><span class="fu">c</span>(burned_hab_km, </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>                     burned_protected_area_km2, </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                     burned_protected_area_all_km2</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">Percent_Burned_Area =</span> <span class="fu">c</span>( </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    percent_burned, </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    percent_burned_protected, </span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    percent_of_all_protected_burned)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>result_summary <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>( </span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span>,</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>( </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Land Type"</span>, </span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Total Area (Km2)"</span>, </span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Burned Area (Km2)"</span>, </span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Burned Area Percent"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 <ol type="1">
-<li><p>table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned</p></li>
-<li><p>Final map/visual with all data layered</p>
+<li><p>table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned</p>
 <p>Nearly 64.2% of habitat loss occurred within protected forest, and 35.8% of loss occurred in unprotected forests.</p></li>
 </ol>
-</section>
-</section>
-<section id="validation" class="level1">
-<h1>Validation</h1>
-<section id="check-re-sample-to-coarse-500m-grid" class="level2">
-<h2 class="anchored" data-anchor-id="check-re-sample-to-coarse-500m-grid">Check: Re-sample to coarse 500m grid</h2>
-<p>MODIS burn data is at a 500m resolution, while ESA World Cover is a 10m resolution. To ensure that burned habitat was not over-estimated due to this discrepancy, all layers were re sampled to a coarse 500m resolution, results were then compared.</p>
-<p>Discrepancy is only about 0.06%</p>
 </section>
 </section>
 <section id="conclusions" class="level1">
