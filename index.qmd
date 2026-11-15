@@ -76,6 +76,11 @@ library(greenSD)
 library(dplyr)
 library(dygraphs)
 library(stringr)
+library(ggplot2)
+library(ggspatial)
+library(tidyterra)
+library(ggpattern)
+
 ```
 
 ## Data:
@@ -88,11 +93,12 @@ library(stringr)
 #1. Define study area bounding box (Northeast Algeria)
 
 # 1.1 define longitude and latitude:
-boundbox_coords <- c( xmin = 3.0,
-                      ymin = 36.3,
-                      xmax = 8.6,
-                      ymax = 37.2)
-
+#boundbox_coords <- c( xmin = 3.0,ymin = 36.3,xmax = 8.6,ymax = 37.2)
+# 1.1 define longitude and latitude:
+boundbox_coords <- c(xmin = 3.5,
+                     ymin = 36.35,
+                     xmax = 6.2,
+                     ymax = 36.9)
 
 #2. Create an sf bounding box polygon + set crs
 # 2.1 set an sfc object to hold spatial geometries:
@@ -181,8 +187,10 @@ VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 
 #4. Download burned area dataset at desired extent 
 #The "Burned area" folder contains five files, they will need to be combined into a single sf for ploting. 
 burn_files <- list.files("data/Burned_area", pattern = "\\.hdf$", full.names = TRUE) 
-dates <- unique(regmatches(basename(burn_files), regexpr("A[0-9]{7}", basename(burn_files))))# 4.1 extract unique dates from burn_files ; MODIS date tags begin with A and follow the 4 digit year, 3 day date format ({7}), [0-9] matches any digit from 0 - 9 -> the complete extraction code is thus "A[0-9]{7}"
-burn_rasters <- lapply(burn_files, rast, subds = 1) # 4.2 loops through each file, opens subdataset "1" (contains burn data), and stores each raster in "burn_rasters" 
+# 4.1 extract unique dates from burn_files ; MODIS date tags begin with A and follow the 4 digit year, 3 day date format ({7}), [0-9] matches any digit from 0 - 9 -> the complete extraction code is thus "A[0-9]{7}"
+dates <- unique(regmatches(basename(burn_files), regexpr("A[0-9]{7}", basename(burn_files))))
+# 4.2 loop through each file, open subdataset "1" (contains burn data), and store each raster in "burn_rasters" 
+burn_rasters <- lapply(burn_files, rast, subds = 1) 
 burned_total <- app(rast(burn_rasters), fun = max, na.rm = TRUE) # 4.3 combine layers into one raster 
 burned_total[burned_total <= 0] <- NA # 4.4 turn non-fire pixels into NA values 
 burned_poly <- as.polygons(burned_total, dissolve = TRUE)# 4.7 convert burned_total to a polygon
@@ -265,7 +273,6 @@ burned_area <- burned_hab |>
 # 2.4 find percent habitat burned 
 percent_burned <- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100 
 
-
 # percent_burned --  6.23% of habitat in the northeast was burned in ONE SUMMER! That's not good! 
 
 ```
@@ -305,8 +312,8 @@ percent_total_hab_burned_protected <- (as.numeric(burned_protected_area$burned_p
 
 # 3.6 find percent of PROTECTED macaque habitat that was burned 
 #Within protected areas, how much habitat was burned? 
-percent_burned_protected <- as.numeric(burned_protected_area/protected_hab_area)*100
-percent_burned_protected # 3.6.1  percent_burned_protected --> Out of protected habitat, 11.06% was burned! 
+percent_burned_protected <- as.numeric(burned_protected_area$burned_protected_area/protected_hab_area$protected_hab_area)*100
+#percent_burned_protected  3.6.1  percent_burned_protected --> Out of protected habitat, 11.06% was burned! 
 
 # 3.7 11.06% is pretty bad,  Lets find out the percent of protected areas in total that were burned: 
 burned_protected_all <- st_intersection(protected_union, burned_hab_union)
@@ -316,10 +323,11 @@ burned_protected_area_all <- burned_protected_all |>
 
 protected_areas_all <- protected_union |> 
   st_as_sf() |>
-  mutate(protected_areas_all = st_area(x))
+  mutate(protected_areas_all = st_area(x)) 
 
   
 percent_of_all_protected_burned <- (as.numeric(burned_protected_area_all$burned_protected_area_all) / as.numeric(protected_areas_all$protected_areas_all)) * 100
+
 
 # 3.7.1 percent_of_all_protected_burned -- 4.67% of protected area was burned
 
@@ -334,25 +342,115 @@ Notes: did not specify year when pulling occurrence data from GBIF, I'm going to
 
 # Results
 
-### 1. Map of Affected Macaque Habitat
+### 1. Map of Affected Macaque Habitat (first draft map)
+
+```{r}
+#1.final map with each layer 
+tree_cover_sf <- tree_cover |>  
+  as.polygons() |>  
+  st_as_sf() # 1.1 set tree_cover raster to sf for plotting 
+
+map_map <- ggplot() + 
+  geom_sf (data = tree_cover_sf, 
+           aes(fill = "Tree Cover"), 
+           color = "transparent",
+           alpha = 0.5)+ #1st layer: overall tree cover with 50% opacity 
+  
+  geom_sf(data = habitat_sf, 
+          aes(fill = "Suitable Macaque Habitat"), 
+          color = "transparent",
+          alpha = 0.7)+ #2nd layer: Macaque habitat range  
+ 
+   geom_sf(data = protected_areas, 
+           aes(fill = "Protected Areas"), 
+           color = "orange",
+           alpha = 0.6)+ #3rd layer: protected area 
+ 
+   geom_sf_pattern(data = burned_sf, 
+                  aes(fill = "Burned Areas"), 
+                  pattern = "stripe", 
+                  pattern_color = "red", 
+                  pattern_fill = "red", 
+                  color = "transparent",
+                  fill = "transparent", 
+                  linewidth = 0.4
+                  )+ #4th layer: burned areas, using geompattern to plot this layer as red "stripes"
+scale_fill_manual(name = "Legend", 
+                  breaks = c(
+                    "Tree Cover", 
+                    "Suitable Macaque Habitat", 
+                    "Protected Areas",
+                    "Burned Areas"), #Define what four layers are being plotted for legend 
+  
+  values = c(
+    "Tree Cover" = "forestgreen", 
+    "Suitable Macaque Habitat" = "darkgreen", 
+    "Protected Areas" = "gold", 
+    "Burned Areas" = "transparent"
+  ))+  #set fill colors for each layer 
+  
+  labs( title = "Summer 2026 Fire Impact On Barbary Macaque Habitat", 
+        subtitle = "Range In The Northeast Coastline of Algeria", 
+         x = "Longitude",
+         y = "Latitude") +  #add title and axis lables 
+  
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    legend.title.position = "top",
+    legend.title = element_text(hjust = 0.5, face = "bold")
+  ) #add a legend 
+
+map_map
+
+```
 
 ### 2. Table
 
-1.  table - want to show how much habitat macaques have in study area - how much was burned, how much habitat they have in protected areas - how much of that was burned
+```{r}
+#| warning: false
+#| message: false
+#| tbl-cap: "Summer 2026 Fire Impact On Barbary Macaque (Macaca sylvanus) Habitat In Northeast Algeria" 
+#| tbl-align: center
 
-2.  Final map/visual with all data layered
+# 1. Convert area calculations from m^2 to km^2
+total_hab_km <- sum(as.numeric(hab_area)) / 1e6
+burned_hab_km <- sum(as.numeric(burned_area$burned_area)) / 1e6
+protected_hab_km2 <- sum(as.numeric(protected_hab_area$protected_hab_area)) / 1e6
+burned_protected_area_km2 <- sum(as.numeric(burned_protected_area$burned_protected_area)) / 1e6
 
-    Nearly 64.2% of habitat loss occurred within protected forest, and 35.8% of loss occurred in unprotected forests.
+# 1.1 find total unprotected habitat by subtracting protected from total 
+unprotected_hab_km2 <- total_hab_km - protected_hab_km2
+burned_unprotected_km2 <- burned_hab_km - burned_protected_area_km2 # 1.1.2 find burned unprotected 
+percent_burned_unprotected <- (burned_unprotected_km2 / unprotected_hab_km2) * 100 # 1.1.3 percent unprotected habitat burned 
 
-# Validation
+# 1.2 Create a data.frame to store calculations for the final table 
+result_summary <- data.frame( Category = c(
+    "Total Suitable Macaque Habitat",
+    "Macaque Habitat Within Protected Areas",
+    "Macaque Habitat Outside Protected Areas" ), # 1.2.3 define row lables 
+    
+    Total_Area_km2= c(total_hab_km, 
+                      protected_hab_km2, 
+                      unprotected_hab_km2), 
+    Burned_Area_Km2 = c(burned_hab_km, 
+                        burned_protected_area_km2, 
+                        burned_unprotected_km2), 
+    Percent_Burned_land = c(percent_burned, 
+                            percent_burned_protected, 
+                            percent_burned_unprotected)) # 1.2.4 define columns in order of appearance 
 
-## Check: Re-sample to coarse 500m grid
+# 1.3 render table 
+result_summary |> knitr::kable(
+  digits = 2,
+  col.names = c("Habitat Type",
+    "Total Area (Km2)",
+    "Burned Area (Km2)",
+    "Burned Area Percent"))
 
-MODIS burn data is at a 500m resolution, while ESA World Cover is a 10m resolution. To ensure that burned habitat was not over-estimated due to this discrepancy, all layers were re sampled to a coarse 500m resolution, results were then compared.
+```
 
-Discrepancy is only about 0.06%
-
-# Conclusions
+Summary/description of results:
 
 # Limitations
 
