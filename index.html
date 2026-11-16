@@ -213,19 +213,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <ol type="1">
-<li><p>The area of interest was first defined as a region of approximately 50,028.83km<sup>2</sup>, surrounding the forested coastline of northeast Algeria. The AOI contains about 2092km<sup>2</sup> of protected land; It encompasses nearly the entirity of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).</p></li>
+<li><p>The area of interest was first defined as a region of approximately 14,779.77km<sup>2</sup>, surrounding the forested coastline of northeast Algeria. The AOI contains about 839.98km<sup>2</sup> of protected land; It encompasses nearly the entirety of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).</p></li>
 <li><p>Relevant data sets pertaining to land cover class, burned area, species range, known protected land, and occurrence (?) were cleaned and cropped to a bounding box within the study area.</p></li>
-<li><p>Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648~ km^2 within the study region.</p></li>
+<li><p>Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648km<sup>2</sup> within the study region.</p></li>
 <li><p>The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection(), the total square km of habitat exposed to fire was then calculated using st_area().</p></li>
 <li><p>Intersect with burned and area was calculated for protected areas.</p></li>
 <li><p>known species occurrence points (?)</p></li>
 </ol>
-<section id="data" class="level2">
-<h2 class="anchored" data-anchor-id="data">Data:</h2>
 </section>
+<section id="data" class="level1">
+<h1>Data:</h1>
 <section id="esa-world-cover-for-tree-cover-data" class="level2">
 <h2 class="anchored" data-anchor-id="esa-world-cover-for-tree-cover-data">1. ESA World Cover For Tree Cover Data</h2>
-<p>Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.</p>
+<p><a href="https://esa-worldcover.org/en">ESA WorldCover</a> provides global land cover products for 2020 - 2021 at a 10 meter resolution. For the purpose of this study, the 2021 data set was masked to tree cover.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -248,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="species-occurrence-points" class="level2">
 <h2 class="anchored" data-anchor-id="species-occurrence-points">2. Species Occurrence Points</h2>
-<p>Occurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page.</p>
+<p>Occurence records for <em>M.sylvanus</em> were collected from the <a href="https://www.gbif.org/taxon/3WWP8">Global Biodiversity Information Facility</a> (Gbif) and filtered to year-year.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -276,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="species-range-map" class="level2">
 <h2 class="anchored" data-anchor-id="species-range-map">3. Species Range Map</h2>
-<p>Habitat range as defined by the IUCN red list.</p>
+<p>Geographic range polygons for <em>M.sylvanus</em> were obtained from the International Union For the Conservation of Nature (IUCN) Red List of Threatened Species (Version 2026-1).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -299,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="burned-area-data" class="level2">
 <h2 class="anchored" data-anchor-id="burned-area-data">4. Burned Area Data</h2>
-<p>VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).</p>
+<p>Burned area data was obtained from <a href="https://www.earthdata.nasa.gov/data/catalog/lpcloud-vnp64a1-002">VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002</a>, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -334,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="protected-areas" class="level2">
 <h2 class="anchored" data-anchor-id="protected-areas">5. Protected Areas</h2>
-<p>World Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026).</p>
+<p>Protected area polygons were obtained from the <a href="https://www.protectedplanet.net/en/data/wdpca?tab=WDPCA">World Database on Protected and Conserved Areas</a>(WDPA) (2026).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
@@ -631,6 +631,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Summary/description of results:</p>
 </section>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>I do conclude this study was completed and is, in other words, complete. That being said, I can now make concluding remarks on how complete it is. One might even say I’ve reached a conclusion, conclusively.</p>
 </section>
 <section id="limitations" class="level1">
 <h1>Limitations</h1>
