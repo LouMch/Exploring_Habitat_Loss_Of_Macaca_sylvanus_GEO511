@@ -345,7 +345,10 @@ Notes: did not specify year when pulling occurrence data from GBIF, I'm going to
 ### 1. Map of Affected Macaque Habitat (first draft map)
 
 ```{r}
-#1.final map with each layer 
+#| warning: false
+#| message: false
+#| results: false 
+#1.final map with each layer
 tree_cover_sf <- tree_cover |>  
   as.polygons() |>  
   st_as_sf() # 1.1 set tree_cover raster to sf for plotting 

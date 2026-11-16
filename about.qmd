@@ -1,9 +1,10 @@
 ---
 title: "About"
+format: 
+  html:
+    theme: solar
 ---
 
-About this site
+Exploring habitat loss of the Barbary Macaque (Macaca sylvanus) in Northeast Algeria following severe wildfires in the summer of 2026
 
-```{r}
-1 + 1
-```
+
