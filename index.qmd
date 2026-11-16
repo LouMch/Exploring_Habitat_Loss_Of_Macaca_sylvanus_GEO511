@@ -47,11 +47,11 @@ This study aims to map the spatial intersection of 2026 wildfire damage with kno
 
 # Methods
 
-1.  The area of interest was first defined as a region of approximately 50,028.83km^2^, surrounding the forested coastline of northeast Algeria. The AOI contains about 2092km^2^ of protected land; It encompasses nearly the entirity of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).
+1.  The area of interest was first defined as a region of approximately 14,779.77km^2^, surrounding the forested coastline of northeast Algeria. The AOI contains about 839.98km^2^ of protected land; It encompasses nearly the entirety of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).
 
 2.  Relevant data sets pertaining to land cover class, burned area, species range, known protected land, and occurrence (?) were cleaned and cropped to a bounding box within the study area.
 
-3.  Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648\~ km\^2 within the study region.
+3.  Suitable habitat range was defined as areas where tree-cover intersects with known habitat range polygons. This represented a total area of about 648km^2^ within the study region.
 
 4.  The overlapping area between defined suitable habitat and burned area polygons was calculated using st_intersection(), the total square km of habitat exposed to fire was then calculated using st_area().
 
@@ -83,7 +83,7 @@ library(ggpattern)
 
 ```
 
-## Data:
+# Data:
 
 ```{r}
 #| echo: false
@@ -106,15 +106,13 @@ boundbox_poly <- st_as_sfc(st_bbox(boundbox_coords, crs = 4326))
 #view(boundbox_poly) # 2.2 check that polygon returns intended geography
 #plot(boundbox_poly) # 2.3 draws a rectangle with no data
 #3. find the area of the bounding box 
-#boundbox_projected <- st_transform(boundbox_poly, crs = 32632)
-#area_m2 <- st_area(boundbox_projected)
+#area_m2 <- st_area(boundbox_poly)/1e6
 #area_m2  
-
 ```
 
 ## 1. ESA World Cover For Tree Cover Data
 
-Land cover data downloaded from ESA World Cover from the year 2021, masked to Tree Cover.
+[ESA WorldCover](https://esa-worldcover.org/en) provides global land cover products for 2020 - 2021 at a 10 meter resolution. For the purpose of this study, the 2021 data set was masked to tree cover.
 
 ```{r}
 #| label: download_landcover
@@ -134,7 +132,7 @@ plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 
 ## 2. Species Occurrence Points
 
-Occurrence points collected from the Global Biodiversity Information Facility (gbif) - may be excluded from final- see notes at end of page.
+Occurence records for *M.sylvanus* were collected from the [Global Biodiversity Information Facility ](https://www.gbif.org/taxon/3WWP8) (Gbif) and filtered to year-year.
 
 ```{r}
 #| label: download_occ_pt
@@ -158,7 +156,7 @@ plot(st_geometry(occ_sf), col = "orange", pch = 16, cex = 0.5, add = TRUE)
 
 ## 3. Species Range Map
 
-Habitat range as defined by the IUCN red list.
+Geographic range polygons for *M.sylvanus* were obtained from the International Union For the Conservation of Nature (IUCN) Red List of Threatened Species (Version 2026-1).
 
 ```{r}
 #| label: download_sp_range
@@ -177,7 +175,7 @@ plot(st_geometry(macaque_range), border = "red", lwd = 1.0, add = TRUE) #note to
 
 ## 4. Burned Area Data
 
-VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002, from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).
+Burned area data was obtained from [VIIRS/NPP Burned Area Monthly L4 Global 500m SIN Grid V002](https://www.earthdata.nasa.gov/data/catalog/lpcloud-vnp64a1-002), from 1 June 2026 to 31 October 2026 (Date range stretched to include the entire summer fire season).
 
 ```{r}
 #| warning: false 
@@ -211,7 +209,7 @@ plot(st_geometry(burned_sf), pch = 4, col = "red", cex = 0.6, add = TRUE)
 
 ## 5. Protected Areas
 
-World Database on Protected and Conserved Areas (WDPA), filtered to most recent data set (2026).
+Protected area polygons were obtained from the [World Database on Protected and Conserved Areas ](https://www.protectedplanet.net/en/data/wdpca?tab=WDPCA)(WDPA) (2026).
 
 ```{r}
 #| label: download_protected_areas
@@ -455,6 +453,10 @@ result_summary |> knitr::kable(
 ```
 
 Summary/description of results:
+
+# Conclusions 
+
+I do conclude this study was completed and is, in other words, complete. That being said, I can now make concluding remarks on how complete it is. One might even say I've reached a conclusion, conclusively.
 
 # Limitations
 
