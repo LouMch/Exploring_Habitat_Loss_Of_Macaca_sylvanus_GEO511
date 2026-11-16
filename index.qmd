@@ -371,9 +371,10 @@ map_map <- ggplot() +
                   pattern = "stripe", 
                   pattern_color = "red", 
                   pattern_fill = "red", 
-                  color = "transparent",
-                  fill = "transparent", 
-                  linewidth = 0.4
+                  color = "darkred",
+                  linewidth = 0.1, 
+                  pattern_spacing = 0.02, 
+                  pattern_size = .05
                   )+ #4th layer: burned areas, using geompattern to plot this layer as red "stripes"
 scale_fill_manual(name = "Legend", 
                   breaks = c(
@@ -390,7 +391,7 @@ scale_fill_manual(name = "Legend",
   ))+  #set fill colors for each layer 
   
   labs( title = "Summer 2026 Fire Impact On Barbary Macaque Habitat", 
-        subtitle = "Range In The Northeast Coastline of Algeria", 
+        subtitle = "M.sylvanus Range In The Northeast Coastline of Algeria", 
          x = "Longitude",
          y = "Latitude") +  #add title and axis lables 
   
@@ -454,8 +455,18 @@ Summary/description of results:
 
 # Limitations
 
-Difference between resolution in burned area dataset and ESAworldcover dataset – still looking into how to quantify the amount of distortion this might be causing the final results
+Difference between resolution in burned area data set and ESAworldcover data set – still looking into how to quantify the amount of distortion this might be causing the final results
 
 Might have to switch CRS for calculations so it's not using degrees
 
-# Refrences
+# References
+
+**Papers**
+
+Boumenir, M., Brotcorne, F., Hornick, J.-L., Iguer-Ouada, M., & Moula, N. (2025). The conservation status of the Barbary macaque (*macaca sylvanus*) in Algeria: Population estimates and human impacts. Retrieved from https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/ 
+
+**Useful coding references**
+
+1.  [Loading MODIS data in R ](https://tech.popdata.org/dhs-research-hub/posts/2024-08-01-ndvi-data/)
+2.  [Using patterns when plotting in ggplot2](https://albert-rapp.de/posts/ggplot2-tips/25_maps_patterns/25_maps_patterns)
+3.  [Creating a table from data frame](https://www.geeksforgeeks.org/r-language/create-table-from-dataframe-in-r/)
