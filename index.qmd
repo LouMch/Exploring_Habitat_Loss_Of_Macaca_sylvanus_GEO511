@@ -132,7 +132,7 @@ plot(tree_cover, main = "Tree Cover In Northeast Algeria", col = "forestgreen")
 
 ## 2. Species Occurrence Points
 
-Occurence records for *M.sylvanus* were collected from the [Global Biodiversity Information Facility ](https://www.gbif.org/taxon/3WWP8) (Gbif) and filtered to year-year.
+Occurence records for *M.sylvanus* were collected from the [Global Biodiversity Information Facility](https://www.gbif.org/taxon/3WWP8) (Gbif) and filtered to year-year.
 
 ```{r}
 #| label: download_occ_pt
@@ -209,7 +209,7 @@ plot(st_geometry(burned_sf), pch = 4, col = "red", cex = 0.6, add = TRUE)
 
 ## 5. Protected Areas
 
-Protected area polygons were obtained from the [World Database on Protected and Conserved Areas ](https://www.protectedplanet.net/en/data/wdpca?tab=WDPCA)(WDPA) (2026).
+Protected area polygons were obtained from the [World Database on Protected and Conserved Areas](https://www.protectedplanet.net/en/data/wdpca?tab=WDPCA)(WDPA) (2026).
 
 ```{r}
 #| label: download_protected_areas
@@ -232,6 +232,8 @@ plot(st_geometry(protected_areas), col = "gold", add = TRUE )
 # Data Processing & Analysis
 
 ## 1. Creating a suitable habitat raster
+
+*M.sylvanus* is a semi-arboreal primarily herbivorous species inhabiting high elevation mixed broad leaf woodland and conifer forests ([Boumenir et. al, 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/#B1-animals-15-01860)), including such species as the Atlas cedar (*Cedrus atlantica)*, and pure holm oak (*Quercus ilex* ). Arboreal cover is critical in ensuring a year-round consistent forage; during winter months when surface water is scarce, cedar bark is also stripped and consumed for hydration [(van Lavieren & Wich, 2009)](https://www.researchgate.net/publication/231977417_Decline_of_the_Endangered_Barbary_macaque_Macaca_sylvanus_in_the_cedar_forest_of_the_Middle_Atlas_Mountains_Morocco). Wildfires severely alter canopy structure, depleting vital food, water, and roosting resources. For the purpose of this study, suitable habitat is thus defined as the spatial overlap between existing tree cover and extant geographic range (as defined by IUCN).
 
 ```{r}
 #| warning: false 
@@ -454,9 +456,9 @@ result_summary |> knitr::kable(
 
 Summary/description of results:
 
-# Conclusions 
+# Conclusions
 
-I do conclude this study was completed and is, in other words, complete. That being said, I can now make concluding remarks on how complete it is. One might even say I've reached a conclusion, conclusively.
+Concluding remarks '
 
 # Limitations
 
@@ -470,8 +472,10 @@ Might have to switch CRS for calculations so it's not using degrees
 
 Boumenir, M., Brotcorne, F., Hornick, J.-L., Iguer-Ouada, M., & Moula, N. (2025). The conservation status of the Barbary macaque (*macaca sylvanus*) in Algeria: Population estimates and human impacts. Retrieved from https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/ 
 
+van Lavieren, E., & Wich, S. A. (2009). Decline of the endangered Barbary Macaque *Macaca sylvanus* in the Cedar Forest of the Middle Atlas Mountains, Morocco. *Oryx*, *44*(1), 133–138. doi:10.1017/s0030605309990172 
+
 **Useful coding references**
 
-1.  [Loading MODIS data in R ](https://tech.popdata.org/dhs-research-hub/posts/2024-08-01-ndvi-data/)
+1.  [Loading MODIS data in R](https://tech.popdata.org/dhs-research-hub/posts/2024-08-01-ndvi-data/)
 2.  [Using patterns when plotting in ggplot2](https://albert-rapp.de/posts/ggplot2-tips/25_maps_patterns/25_maps_patterns)
 3.  [Creating a table from data frame](https://www.geeksforgeeks.org/r-language/create-table-from-dataframe-in-r/)
