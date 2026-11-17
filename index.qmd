@@ -14,7 +14,7 @@ date-format: long
 # Introduction
 
 The Barbary Macaque (*Macaca sylvanus*)  is North Africa’s only primate and has been classified as endangered by the [IUCN Red list](https://www.iucnredlist.org/search?query=Macaca%20sylvanus&searchType=species) as of 2008. The species occupies a small and heavily fragmented range within forested regions of Morocco and Algeria, along with a small introduced population on Rock of Gibraltar. It faces critical threats from deforestation, urbanization, agriculture, and human disturbances driven primarily by tourism.
-
+# I'm looking forward to see how cookies play into all of this.
 ```{r}
 #| echo: false
 #| warning: false
@@ -24,7 +24,7 @@ The Barbary Macaque (*Macaca sylvanus*)  is North Africa’s only primate and h
 
 
 knitr::include_graphics("data/monkey.png")
-
+# Very cute, very monkey!
 ```
 
 Algeria holds nearly 25% of the Barbary Macaque’s global population, however there is a crucial need for new reviews as a comprehensive census of the existing populations within the country does not exist ([Boumenir et al ., 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC12248802/#B1-animals-15-01860)) Even more pressing, recent dry seasons driven by climate change have worsened regional wild fires, which overlap significantly with what remains of Algerian macaque habitat.
@@ -44,7 +44,7 @@ knitr::include_graphics("data/fire_image.jpeg")
 In the summer of 2026 [nearly 160 wildfires broke out within a 24 hour period](https://reliefweb.int/report/algeria/dza-fire-07-2026-algeria-wildfires-july-2026-2026-07-22), stretching along the coastline of Algeria. These fires were felt across the north-eastern, central, and western portions of the country, with the highest intensity occurring in the north-east. The rapid scale and severity of these fires within such a short time frame signifies an urgent need to asses their impact on vulnerable wildlife habitat.
 
 This study aims to map the spatial intersection of 2026 wildfire damage with known macaque habitat to estimate recent habitat loss. Wildfire damages intersect with protected areas will also be evaluated, to determine whether existing conservation frameworks are effectively safeguarding the Barbary Macaque.
-
+# Great set up, love the visuals and can clearly see where you're going with this!
 # Methods
 
 1.  The area of interest was first defined as a region of approximately 14,779.77km^2^, surrounding the forested coastline of northeast Algeria. The AOI contains about 839.98km^2^ of protected land; It encompasses nearly the entirety of Algerian macaque habitat, however excludes a singular small patch located in Blida (a few miles southwest of Algiers, falling outside the region of highest fire concentration).
@@ -453,14 +453,14 @@ result_summary |> knitr::kable(
     "Burned Area Percent"))
 
 ```
-
+# Your data and methods are spot on, and your results look great! I'm sorry I don't really have any suggestions for improvement, what you have here is phenomenal in my opinion.
 Summary/description of results:
 
 # Conclusions
 
 Concluding remarks '
 
-# Limitations
+# Limitations # Maybe mention here how your protected and burned area maps look like mustard and ketchup, respectively.
 
 Difference between resolution in burned area data set and ESAworldcover data set – still looking into how to quantify the amount of distortion this might be causing the final results
 
