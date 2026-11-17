@@ -409,6 +409,93 @@ map_map
 
 ```
 
+```{r}
+# Optional: Add a bounding box or background land layer if available, 
+# or adjust coordinate scaling to fix the stretch.
+
+map_map <- ggplot() +  
+  # 1st layer: Tree cover (softer green, higher transparency)
+  geom_sf(data = tree_cover_sf,  
+          aes(fill = "Tree Cover"),  
+          color = "transparent",
+          alpha = 0.4) +  
+  
+  # 2nd layer: Macaque habitat range  
+  geom_sf(data = habitat_sf,  
+          aes(fill = "Suitable Macaque Habitat"),  
+          color = "transparent",
+          alpha = 0.6) +  
+
+  # 3rd layer: Protected areas (professional amber/slate instead of bright gold)
+  geom_sf(data = protected_areas,  
+          aes(fill = "Protected Areas"),  
+          color = "#B8860B", # Darker goldenrod outline for definition
+          linewidth = 0.3,
+          alpha = 0.5) +  
+
+  # 4th layer: Burned areas (cleaner crimson stripe pattern)
+  geom_sf_pattern(data = burned_sf,  
+                  aes(fill = "Burned Areas"),  
+                  pattern = "stripe",  
+                  pattern_color = "#8B0000",  
+                  pattern_fill = "#FF6347",  
+                  color = "#8B0000",
+                  linewidth = 0.2,  
+                  pattern_spacing = 0.03,  
+                  pattern_size = 0.1) +  
+
+  # Manual scales with cohesive, publication-ready colors
+  scale_fill_manual(
+    name = "Legend",  
+    breaks = c("Tree Cover", "Suitable Macaque Habitat", "Protected Areas", "Burned Areas"),
+    values = c(
+      "Tree Cover"              = "#2e8b57", # Sea green
+      "Suitable Macaque Habitat" = "#1b4d3e", # Deep forest green
+      "Protected Areas"         = "#e9c46a", # Muted professional gold/tan
+      "Burned Areas"            = "transparent"
+    )
+  ) +  
+
+  # Fix legend aesthetics so the pattern displays nicely
+  guides(fill = guide_legend(
+    override.aes = list(
+      pattern = c("none", "none", "none", "stripe"),
+      pattern_color = c(NA, NA, NA, "#8B0000"),
+      pattern_fill = c(NA, NA, NA, "#FF6347"),
+      fill = c("#2e8b57", "#1b4d3e", "#e9c46a", "transparent"),
+      color = c(NA, NA, "#B8860B", "#8B0000")
+    ),
+    nrow = 1 # Horizontal legend often looks cleaner at the bottom
+  )) +
+
+  labs( 
+    title = "Summer 2026 Fire Impact on Barbary Macaque Habitat",  
+    subtitle = "Macaca sylvanus range along the northeast coastline of Algeria",  
+    x = "Longitude",
+    y = "Latitude",
+    caption = "Source: Tree cover & burn severity data (2026)"
+  ) +  
+
+  # Professional theme adjustments
+  theme_minimal(base_size = 11) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, hjust = 0),
+    plot.subtitle = element_text(size = 10, color = "grey30", hjust = 0),
+    panel.grid.major = element_line(color = "grey92", linewidth = 0.5),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    legend.position = "bottom",
+    legend.title.position = "top",
+    legend.title = element_text(hjust = 0.5, face = "bold"),
+    legend.background = element_rect(fill = "grey98", color = "grey85", linewidth = 0.3),
+    axis.title = element_text(face = "bold", size = 10)
+  ) +
+  coord_sf(expand = FALSE) # Keeps clean bounding box edges
+
+map_map
+```
+
 ### 2. Table
 
 ```{r}
