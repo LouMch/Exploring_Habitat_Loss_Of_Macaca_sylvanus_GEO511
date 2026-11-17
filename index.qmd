@@ -71,10 +71,10 @@ library(widgetframe)
 library(sf)
 library(terra)
 library(rgbif)
+library(purrr)
 library(geodata)
 library(greenSD)
 library(dplyr)
-library(dygraphs)
 library(stringr)
 library(ggplot2)
 library(ggspatial)
@@ -137,7 +137,7 @@ Occurence records for *M.sylvanus* were collected from the [Global Biodiversity 
 ```{r}
 #| label: download_occ_pt
 #| cache: false
-#| warning: false 
+#| warning: false  
 #| message: false 
 #| results: false
 #2. Download species point data at desired extent 
@@ -184,27 +184,28 @@ Burned area data was obtained from [VIIRS/NPP Burned Area Monthly L4 Global 500m
 #| error: false
 #4. Download burned area dataset at desired extent 
 #The "Burned area" folder contains five files, they will need to be combined into a single sf for ploting. 
-burn_files <- list.files("data/Burned_area", pattern = "\\.hdf$", full.names = TRUE) 
-# 4.1 extract unique dates from burn_files ; MODIS date tags begin with A and follow the 4 digit year, 3 day date format ({7}), [0-9] matches any digit from 0 - 9 -> the complete extraction code is thus "A[0-9]{7}"
-dates <- unique(regmatches(basename(burn_files), regexpr("A[0-9]{7}", basename(burn_files))))
-# 4.2 loop through each file, open subdataset "1" (contains burn data), and store each raster in "burn_rasters" 
-burn_rasters <- lapply(burn_files, rast, subds = 1) 
-burned_total <- app(rast(burn_rasters), fun = max, na.rm = TRUE) # 4.3 combine layers into one raster 
-burned_total[burned_total <= 0] <- NA # 4.4 turn non-fire pixels into NA values 
-burned_poly <- as.polygons(burned_total, dissolve = TRUE)# 4.7 convert burned_total to a polygon
-burned_sf <- st_as_sf(burned_poly) |> 
-  st_transform(st_crs(boundbox_poly)) |>
-  st_make_valid() |> 
-  st_intersection(boundbox_poly) # 4.6 convert to sf file and crop to bounding box 
+burn_files <- list.files("data/Burned_area", full.names = TRUE) 
+# 4.1 extract unique dates from burn_files ; MODIS date tags begin with A and follow the 4 digit year, 3 day date format ({7}), [0-9] matches any digit from 0 - 9 -> the complete extraction code is  "A[0-9]{7}"
+dates <- unique(str_extract(basename(burn_files), "A[0-9]{7}"))
+#4.2 Load each file as a raster using map(), subds "1" contains burn files
+burn_rasters <- map(burn_files, function(file) {
+  rast(file, subds = 1)
+})
+burn_mosaic <- reduce(burn_rasters, mosaic) # 4.3 combine rasters using reduce
+# 4.4 remove any none-fire pixels 
+m <- matrix(c(-Inf, 0, NA), nrow = 1) # 4.4.1 define a classification matrix, range from  -infinity to 0 as NA (e.g. missing data)
+burn_class <- classify(burn_mosaic, m) # 4.4.2 check "m" with rule set by matrix 
+# 4.5 convert to sf for plotting 
+burned_sf <- as.polygons(burn_class, dissolve = TRUE) |>   
+  st_as_sf() |>   
+  st_transform(st_crs(boundbox_poly)) |>  
+  st_make_valid() |>   
+  st_intersection(boundbox_poly)
 
-##== 4.7 run a test plot == ## 
+##== 4.6 run a test plot == ## 
 
 plot(tree_cover, col= "forestgreen", main = "Burned Areas in Northeast Algeria: Summer of 2026 ")
 plot(st_geometry(burned_sf), pch = 4, col = "red", cex = 0.6, add = TRUE)
-
-
-
-  
 ```
 
 ## 5. Protected Areas
@@ -336,7 +337,7 @@ percent_of_all_protected_burned <- (as.numeric(burned_protected_area_all$burned_
 
 ## 
 
-## 5. Final validation with species occurrence points
+## 4. Final validation with species occurrence points
 
 Notes: did not specify year when pulling occurrence data from GBIF, I'm going to try filtering to recent years first- if it does not return enough points for validation it may be better to cut species points out of the study rather then use outdated occurrences, but I have not decided yet.
 
@@ -407,93 +408,6 @@ scale_fill_manual(name = "Legend",
 
 map_map
 
-```
-
-```{r}
-# Optional: Add a bounding box or background land layer if available, 
-# or adjust coordinate scaling to fix the stretch.
-
-map_map <- ggplot() +  
-  # 1st layer: Tree cover (softer green, higher transparency)
-  geom_sf(data = tree_cover_sf,  
-          aes(fill = "Tree Cover"),  
-          color = "transparent",
-          alpha = 0.4) +  
-  
-  # 2nd layer: Macaque habitat range  
-  geom_sf(data = habitat_sf,  
-          aes(fill = "Suitable Macaque Habitat"),  
-          color = "transparent",
-          alpha = 0.6) +  
-
-  # 3rd layer: Protected areas (professional amber/slate instead of bright gold)
-  geom_sf(data = protected_areas,  
-          aes(fill = "Protected Areas"),  
-          color = "#B8860B", # Darker goldenrod outline for definition
-          linewidth = 0.3,
-          alpha = 0.5) +  
-
-  # 4th layer: Burned areas (cleaner crimson stripe pattern)
-  geom_sf_pattern(data = burned_sf,  
-                  aes(fill = "Burned Areas"),  
-                  pattern = "stripe",  
-                  pattern_color = "#8B0000",  
-                  pattern_fill = "#FF6347",  
-                  color = "#8B0000",
-                  linewidth = 0.2,  
-                  pattern_spacing = 0.03,  
-                  pattern_size = 0.1) +  
-
-  # Manual scales with cohesive, publication-ready colors
-  scale_fill_manual(
-    name = "Legend",  
-    breaks = c("Tree Cover", "Suitable Macaque Habitat", "Protected Areas", "Burned Areas"),
-    values = c(
-      "Tree Cover"              = "#2e8b57", # Sea green
-      "Suitable Macaque Habitat" = "#1b4d3e", # Deep forest green
-      "Protected Areas"         = "#e9c46a", # Muted professional gold/tan
-      "Burned Areas"            = "transparent"
-    )
-  ) +  
-
-  # Fix legend aesthetics so the pattern displays nicely
-  guides(fill = guide_legend(
-    override.aes = list(
-      pattern = c("none", "none", "none", "stripe"),
-      pattern_color = c(NA, NA, NA, "#8B0000"),
-      pattern_fill = c(NA, NA, NA, "#FF6347"),
-      fill = c("#2e8b57", "#1b4d3e", "#e9c46a", "transparent"),
-      color = c(NA, NA, "#B8860B", "#8B0000")
-    ),
-    nrow = 1 # Horizontal legend often looks cleaner at the bottom
-  )) +
-
-  labs( 
-    title = "Summer 2026 Fire Impact on Barbary Macaque Habitat",  
-    subtitle = "Macaca sylvanus range along the northeast coastline of Algeria",  
-    x = "Longitude",
-    y = "Latitude",
-    caption = "Source: Tree cover & burn severity data (2026)"
-  ) +  
-
-  # Professional theme adjustments
-  theme_minimal(base_size = 11) +
-  theme(
-    plot.title = element_text(face = "bold", size = 13, hjust = 0),
-    plot.subtitle = element_text(size = 10, color = "grey30", hjust = 0),
-    panel.grid.major = element_line(color = "grey92", linewidth = 0.5),
-    panel.grid.minor = element_blank(),
-    panel.background = element_rect(fill = "white", color = NA),
-    plot.background = element_rect(fill = "white", color = NA),
-    legend.position = "bottom",
-    legend.title.position = "top",
-    legend.title = element_text(hjust = 0.5, face = "bold"),
-    legend.background = element_rect(fill = "grey98", color = "grey85", linewidth = 0.3),
-    axis.title = element_text(face = "bold", size = 10)
-  ) +
-  coord_sf(expand = FALSE) # Keeps clean bounding box edges
-
-map_map
 ```
 
 ### 2. Table
