@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Louiza Mohamed-Cherif">
-<meta name="dcterms.date" content="2026-11-16">
+<meta name="dcterms.date" content="2026-11-24">
 
 <title>Wildfire Exposure Assessment For Algerian Barbary Macaques (Macaca sylvanus) – Wildfire Exposure Assesment For Algerian Barbary Macaques (*Macaca sylvanus*)</title>
 <style>
@@ -171,7 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 16, 2026</p>
+      <p class="date">November 24, 2026</p>
     </div>
   </div>
   
@@ -388,7 +388,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> macaque_habitat_raster <span class="sc">|&gt;</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.polygons</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>hab_area <span class="ot">&lt;-</span> <span class="fu">st_area</span>(habitat_sf) <span class="co">#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>hab_area <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(habitat_sf, <span class="at">crs =</span> <span class="dv">32631</span>) <span class="sc">|&gt;</span> <span class="fu">st_area</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -397,8 +398,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Show Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_sf)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(habitat_sf)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>burned_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_sf) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">32631</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>habitat_sf <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(habitat_sf) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">32631</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#2. Calculate the overlap of burned area and macaque habitat </span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(burned_sf) <span class="co"># 1.1 union ensures burned area is one combined total </span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>burned_hab_union <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(burned_hab_union)</span>
@@ -424,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>Show Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#3. Find intersect of protected areas and habitat </span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 3.1 follow same steps as when calculating total habitat burned </span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>protected_areas <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(protected_areas)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>protected_areas <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(protected_areas) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">32631</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>protected_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(protected_areas) </span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>protected_union <span class="ot">&lt;-</span> <span class="fu">st_make_valid</span>(protected_union) <span class="co"># 3.1.2 combine protected area + make valid so r does not run into processing issues later on </span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>protected_hab <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(protected_union, habitat_sf)</span>
@@ -615,20 +616,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Total Suitable Macaque Habitat</td>
-<td style="text-align: right;">648.88</td>
-<td style="text-align: right;">40.46</td>
+<td style="text-align: right;">648.89</td>
+<td style="text-align: right;">40.48</td>
 <td style="text-align: right;">6.24</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Macaque Habitat Within Protected Areas</td>
 <td style="text-align: right;">235.29</td>
-<td style="text-align: right;">26.03</td>
-<td style="text-align: right;">11.06</td>
+<td style="text-align: right;">26.04</td>
+<td style="text-align: right;">11.07</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Macaque Habitat Outside Protected Areas</td>
-<td style="text-align: right;">413.59</td>
-<td style="text-align: right;">14.43</td>
+<td style="text-align: right;">413.60</td>
+<td style="text-align: right;">14.44</td>
 <td style="text-align: right;">3.49</td>
 </tr>
 </tbody>
