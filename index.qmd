@@ -5,6 +5,7 @@ format:
     theme: solar
     code-fold: true
     code-summary: "Show Code"
+    toggle: true 
 author: Louiza Mohamed-Cherif 
 subtitle: "A spatial assessment of Barbary Macaque habitat overlap with 2026 wildfires in Northeastern Algeria"
 date: today
@@ -116,7 +117,6 @@ boundbox_poly <- st_as_sfc(st_bbox(boundbox_coords, crs = 4326))
 
 ```{r}
 #| label: download_landcover
-#| cache: false
 #| warning: false 
 #| message: false
 #| results: false
@@ -136,7 +136,6 @@ Occurence records for *M.sylvanus* were collected from the [Global Biodiversity 
 
 ```{r}
 #| label: download_occ_pt
-#| cache: false
 #| warning: false  
 #| message: false 
 #| results: false
@@ -160,7 +159,6 @@ Geographic range polygons for *M.sylvanus* were obtained from the International 
 
 ```{r}
 #| label: download_sp_range
-#| cache: false
 #| warning: false 
 #| message: false 
 #| results: false
@@ -214,7 +212,6 @@ Protected area polygons were obtained from the [World Database on Protected and 
 
 ```{r}
 #| label: download_protected_areas
-#| cache: false
 #| warning: false
 #| message: false
 #| results: false 
@@ -247,7 +244,8 @@ plot(macaque_habitat_raster, main = "Macaque Habitat ", col = "forestgreen")
 habitat_sf <- macaque_habitat_raster |> 
   as.polygons() |> 
   st_as_sf()
-hab_area <- st_area(habitat_sf) #Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 
+hab_area <- st_transform(habitat_sf, crs = 32631) |> st_area()
+#Macaque Habitat covers an area of 648879725 square meters/ 648~ km^2 
 
 ```
 
@@ -258,8 +256,8 @@ hab_area <- st_area(habitat_sf) #Macaque Habitat covers an area of 648879725 squ
 #| message: false
 #| results: false 
 #| error: false
-burned_sf <- st_make_valid(burned_sf)
-habitat_sf <- st_make_valid(habitat_sf)
+burned_sf <- st_make_valid(burned_sf) |> st_transform(crs = 32631)
+habitat_sf <- st_make_valid(habitat_sf) |> st_transform(crs = 32631)
 #2. Calculate the overlap of burned area and macaque habitat 
 burned_hab_union <- st_union(burned_sf) # 1.1 union ensures burned area is one combined total 
 burned_hab_union <- st_make_valid(burned_hab_union)
@@ -286,7 +284,7 @@ percent_burned <- (as.numeric(burned_area$burned_area)/as.numeric(hab_area))*100
 #| results: false 
 #3. Find intersect of protected areas and habitat 
 # 3.1 follow same steps as when calculating total habitat burned 
-protected_areas <- st_make_valid(protected_areas)
+protected_areas <- st_make_valid(protected_areas) |> st_transform(32631)
 protected_union <- st_union(protected_areas) 
 protected_union <- st_make_valid(protected_union) # 3.1.2 combine protected area + make valid so r does not run into processing issues later on 
 protected_hab <- st_intersection(protected_union, habitat_sf)
